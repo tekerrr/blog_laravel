@@ -11,7 +11,7 @@
             <div class="container pt-4">Нет статей</div>
         @endforelse
 
-{{--        {{ $articles->links('pagination.view') }}--}}
+        {{ $articles->onEachSide(2)->links('pagination.view') }}
 
         @includeWhen(true, 'subscription.view')
 
