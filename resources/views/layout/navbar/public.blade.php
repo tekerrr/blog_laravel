@@ -14,8 +14,8 @@
             <ul class="navbar-nav">
 
                 @include('layout.navbar.item', ['name' => 'Главная', 'path' => '/', 'active' => true])
-
                 @include('layout.navbar.dropdown', ['name' => 'Статьи', 'active' => true, 'items' => [], 'lastItem' => ['title' => 'Все', 'path' => '/']])
+                @include('layout.navbar.auth-button')
 
             </ul>
         </div>

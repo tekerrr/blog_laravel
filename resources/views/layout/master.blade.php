@@ -13,10 +13,9 @@
 </head>
 
 <body>
-
     @include('layout.navbar.public')
 
-    @include('layout.flash_message')
+    @include('layout.flash-message')
 
     @yield('content')
 

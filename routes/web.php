@@ -20,5 +20,9 @@ $article = [
     id est laborum.',
     'created_at' => '28 августа 2019 г. 23:00',
 ];
-Route::view('/articles', 'articles.index', ['articles' => [$article]]);
-Route::view('/articles/1', 'articles.show', ['article' => $article]);
+Route::view('/articles', 'articles.index', ['articles' => [$article]])->name('articles.index');
+Route::view('/articles/1', 'articles.show', ['articles' => [$article]]);
+
+Auth::routes(['reset' => false, 'confirm' => false, 'verify' => false]);
+
+Route::get('/home', 'HomeController@index')->name('home');
