@@ -2,7 +2,7 @@
     <div class="media">
 
         <div class="col-2 mr-3">
-            <img src="/img/article/default.svg"
+            <img src="{{ $article->image->path ?? '/img/article/default.svg' }}"
                  alt="post img" class="img-fluid">
         </div>
 

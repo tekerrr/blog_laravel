@@ -12,6 +12,20 @@ class UserTest extends TestCase
     use RefreshDatabase, WithFaker, WithRoles;
 
     /** @test */
+    public function the_class_is_using_has_image_trait_correctly()
+    {
+        // Arrange
+        $user = $this->createUser();
+        $image = factory(\App\Image::class)->state('withoutImageable')->make();
+
+        // Act
+        $user->image()->save($image);
+
+        // Assert
+        $this->assertEquals($image->path, $user->image->path);
+    }
+
+    /** @test */
     public function a_user_can_have_roles()
     {
         // Arrange
