@@ -13,7 +13,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        \View::composer('layout.navbar.public', function ($view) {
+            $view->with('articles', \App\Article::active()->latest()->take(5)->get());
+        });
     }
 
     /**

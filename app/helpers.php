@@ -11,15 +11,3 @@ if (! function_exists('flash')) {
         session()->flash('message_type', $type);
     }
 }
-
-if (! function_exists('routeOrNull')) {
-    /**
-     * @param string $name
-     * @param $model
-     * @return string|null
-     */
-    function routeOrNull(string $name, $model)
-    {
-        return $model !== null ? route($name, $model) : null;
-    }
-}

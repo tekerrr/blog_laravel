@@ -26,10 +26,11 @@ class ArticleController extends Controller
 
     public function show(Article $article)
     {
-        $previous = routeOrNull('articles.show', $article->previous());
-        $next = routeOrNull('articles.show', $article->next());
-
-        return view('articles.show', compact('article', 'previous', 'next'));
+        return view('articles.show', [
+            'article'  => $article,
+            'previous' => $this->getShowRoute($article->previous()),
+            'next'     => $this->getShowRoute($article->next())
+        ]);
     }
 
     public function edit($id)
@@ -45,5 +46,10 @@ class ArticleController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    protected function getShowRoute($article): ?string
+    {
+        return $article !== null ? route('articles.show', $article) : null;
     }
 }
