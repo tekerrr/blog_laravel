@@ -15,6 +15,11 @@ class Article extends Model
         return (new Service\Formatter\RusDate())->format($value);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     public function previous()
     {
         return self::active()->where('id', '<', $this->id)->orderByDesc('id')->first();

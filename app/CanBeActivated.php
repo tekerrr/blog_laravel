@@ -18,14 +18,16 @@ trait CanBeActivated
 
     public function activate()
     {
-        $this->update(['is_active' => true]);
+        $this->is_active = true;
+        $this->save();
 
         return $this;
     }
 
     public function deactivate()
     {
-        $this->update(['is_active' => false]);
+        $this->is_active = false;
+        $this->save();
 
         return $this;
     }

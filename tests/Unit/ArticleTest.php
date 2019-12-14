@@ -15,15 +15,30 @@ class ArticleTest extends TestCase
     public function attribute_created_at_returns_russian_date()
     {
         // Arrange
-        $artice = factory(Article::class)->create([
+        $article = factory(Article::class)->create([
             'created_at' => \Carbon\Carbon::create(2000, 1, 1, 0, 0, 0),
         ]);
 
         // Act
-        $response = $artice->created_at;
+        $response = $article->created_at;
 
         // Assert
         $this->assertEquals('1 января 2000 г. 00:00', $response);
+    }
+
+    /** @test */
+    public function a_articles_can_have_comments()
+    {
+        // Arrange
+        $article = factory(Article::class)->create();
+        $comments = factory(\App\Comment::class, 2)->make(['article_id' => '']);
+
+        // Act
+        $article->comments()->saveMany($comments);
+
+        // Assert
+        $this->assertEquals($article->comments->first()->body, $comments->first()->body);
+        $this->assertEquals($article->comments->last()->body, $comments->last()->body);
     }
 
     /** @test */

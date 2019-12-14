@@ -15,6 +15,8 @@
                     {{ $article->body }}
                 </article>
 
+                @include('comments.index', ['comments' => $article->comments])
+
                 @include('pagination.simple')
             </div>
         </div>
