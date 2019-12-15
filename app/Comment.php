@@ -8,7 +8,7 @@ class Comment extends Model
 {
     use CanBeActivated;
 
-    protected $fillable = ['body'];
+    protected $fillable = ['body', 'user_id', 'is_active'];
 
     public function getCreatedAtAttribute($value)
     {

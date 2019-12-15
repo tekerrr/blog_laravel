@@ -27,7 +27,12 @@ class ArticleController extends Controller
     public function show(Article $article)
     {
         return view('articles.show', [
-            'article'  => $article->load('comments', 'comments.user'),
+            'article'  => $article->load([
+                'comments' => function ($query) {
+                    $query->active();
+                },
+                'comments.user'
+            ]),
             'previous' => $this->getShowRoute($article->previous()),
             'next'     => $this->getShowRoute($article->next())
         ]);

@@ -23,6 +23,11 @@ class User extends Authenticatable
         return $this->roles()->where('role', $role)->exists();
     }
 
+    public function hasRoles(array $roles): bool
+    {
+        return $this->roles()->whereIn('role', $roles)->exists();
+    }
+
     public function addRole(string $role): User
     {
         $this->roles()->attach(\App\Role::firstOrCreate(['role' => $role]));
@@ -38,5 +43,10 @@ class User extends Authenticatable
     public function isAuthor(): bool
     {
         return $this->hasRole('author');
+    }
+
+    public function isStuff(): bool
+    {
+        return $this->hasRoles(['admin', 'author']);
     }
 }

@@ -5,3 +5,7 @@ Route::redirect('/', '/articles');
 Auth::routes(['reset' => false, 'confirm' => false, 'verify' => false]);
 
 Route::resource('articles', 'ArticleController')->only('index', 'show');
+Route::post('/articles/{article}/comments', 'CommentController@store')
+    ->middleware('auth')
+    ->name('comments.store')
+;

@@ -17,6 +17,8 @@
 
                 @include('comments.index', ['comments' => $article->comments])
 
+                @include('comments.create', compact('article'))
+
                 @include('pagination.simple')
             </div>
         </div>

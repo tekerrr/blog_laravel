@@ -16,6 +16,10 @@ class CheckRole
      */
     public function handle($request, Closure $next, string $role)
     {
+        if ($request->user()->isAdmin()) {
+            return $next($request);
+        }
+
         abort_if(! $request->user()->hasRole($role), 403);
 
         return $next($request);

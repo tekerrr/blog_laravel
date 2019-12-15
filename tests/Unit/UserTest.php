@@ -39,6 +39,7 @@ class UserTest extends TestCase
         $this->assertTrue($user->hasRole($roles->first()->role));
         $this->assertTrue($user->hasRole($roles->last()->role));
         $this->assertFalse($user->hasRole($this->faker->words(2, true)));
+        $this->assertFalse($user->hasRoles($this->faker->words(2)));
     }
 
     /** @test */
@@ -127,6 +128,45 @@ class UserTest extends TestCase
 
         // Act
         $response = $user->isAuthor();
+
+        // Assert
+        $this->assertFalse($response);
+    }
+
+    /** @test */
+    public function an_admin_is_defined_as_stuff()
+    {
+        // Arrange
+        $user = $this->createAdmin();
+
+        // Act
+        $response = $user->isStuff();
+
+        // Assert
+        $this->assertTrue($response);
+    }
+
+    /** @test */
+    public function an_author_is_defined_as_stuff()
+    {
+        // Arrange
+        $user = $this->createAuthor();
+
+        // Act
+        $response = $user->isStuff();
+
+        // Assert
+        $this->assertTrue($response);
+    }
+
+    /** @test */
+    public function an_user_is_not_defined_as_stuff()
+    {
+        // Arrange
+        $user = $this->createUser();
+
+        // Act
+        $response = $user->isStuff();
 
         // Assert
         $this->assertFalse($response);
