@@ -1,6 +1,6 @@
 @auth
     <li class="dropdown">
-        <a class="nav-link dropdown-toggle ml-3"
+        <a class="nav-link dropdown-toggle ml-3 {{ false ? 'active' : '' }}"
            href="#" data-toggle="dropdown">{{ auth()->user()->name }}</a>
         <div class="dropdown-menu">
             <a class="dropdown-item" href="#">Профиль</a>

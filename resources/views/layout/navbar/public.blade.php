@@ -12,11 +12,11 @@
 
         <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
             <ul class="navbar-nav">
-                @include('layout.navbar.item', ['name' => 'Главная', 'path' => route('articles.index'), 'active' => false])
-                @include('layout.navbar.dropdown-articles', ['article' => $articles, 'active' => true])
+                @include('layout.navbar.item', ['name' => 'Главная', 'path' => route('articles.index'), 'active' => is_current_route('articles.index')])
+                @include('layout.navbar.dropdown-articles', ['article' => $articles, 'active' => is_current_route('articles.show')])
 
                 @foreach ($pages as $page)
-                    @include('layout.navbar.item', ['name' => $page->title, 'path' => route('pages.show', $page), 'active' => false])
+                    @include('layout.navbar.item', ['name' => $page->title, 'path' => route('pages.show', $page), 'active' => is_current_route('pages.show', $page)])
                 @endforeach
 
                 @include('layout.navbar.auth-button')
