@@ -15,5 +15,7 @@ class ContentSeeder extends Seeder
             $article->image()->save(factory(\App\Image::class)->state('withoutImageable')->make());
             factory(\App\Comment::class, 5)->create(['article_id' => $article->id]);
         });
+
+        factory(\App\Page::class)->create();
     }
 }

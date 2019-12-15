@@ -14,6 +14,11 @@
             <ul class="navbar-nav">
                 @include('layout.navbar.item', ['name' => 'Главная', 'path' => route('articles.index'), 'active' => false])
                 @include('layout.navbar.dropdown-articles', ['article' => $articles, 'active' => true])
+
+                @foreach ($pages as $page)
+                    @include('layout.navbar.item', ['name' => $page->title, 'path' => route('pages.show', $page), 'active' => false])
+                @endforeach
+
                 @include('layout.navbar.auth-button')
             </ul>
         </div>
