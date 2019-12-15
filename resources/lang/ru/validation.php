@@ -137,5 +137,6 @@ return [
         'available'             => 'Доступно',
         'size'                  => 'Размер',
         'body'                  => ' ',
+        'current-password'      => 'Текущий пароль',
     ],
 ];

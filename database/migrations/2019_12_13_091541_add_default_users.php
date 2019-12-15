@@ -12,12 +12,14 @@ class AddDefaultUsers extends Migration
             'name'     => 'Admin',
             'email'    => config('admin.email'),
             'password' => Hash::make(config('admin.password')),
+            'about'    => 'Admin',
         ])->addRole('admin');
 
         \App\User::create([
             'name'     => 'Author',
             'email'    => config('admin.author.email'),
             'password' => Hash::make(config('admin.author.password')),
+            'about'    => 'Author',
         ])->addRole('author');
     }
 
