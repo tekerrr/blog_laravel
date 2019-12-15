@@ -53,4 +53,17 @@ class ArticlesTest extends TestCase
         $response->assertSeeText($articleComments->last()->body);
         $response->assertDontSeeText($otherComment->body);
     }
+
+    /** @test */
+    public function anyone_cannot_view_the_inactive_article_page()
+    {
+        // Arrange
+        $article = factory(Article::class)->create(['is_active' => false]);
+
+        // Act
+        $response = $this->get('/articles/' . $article->id);
+
+        // Assert
+        $response->assertStatus(404);
+    }
 }

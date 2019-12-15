@@ -26,13 +26,17 @@ class ArticleController extends Controller
 
     public function show(Article $article)
     {
+        abort_if(! $article->isActive(), 404);
+
+        $article->load([
+            'comments' => function ($query) {
+                $query->active();
+            },
+            'comments.user',
+        ]);
+
         return view('articles.show', [
-            'article'  => $article->load([
-                'comments' => function ($query) {
-                    $query->active();
-                },
-                'comments.user'
-            ]),
+            'article'  => $article,
             'previous' => $this->getShowRoute($article->previous()),
             'next'     => $this->getShowRoute($article->next())
         ]);
