@@ -15,5 +15,8 @@ Route::delete('/subscriber', 'SubscriberController@destroy')->name('subscriber.d
 Route::get('/password', 'Auth\PasswordController@edit')->name('password.edit');
 Route::patch('/password', 'Auth\PasswordController@update')->name('password.update');
 
+Route::patch('/avatar', 'AvatarController@update')->name('avatar.update');
+Route::delete('/avatar', 'AvatarController@destroy')->name('avatar.destroy');
+
 Route::resource('articles', 'ArticleController')->only('index', 'show');
 Route::post('/articles/{article}/comments', 'CommentController@store')->name('comments.store');
