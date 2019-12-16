@@ -9,6 +9,9 @@ Route::resource('pages', 'PageController')->only('show');
 Route::get('/account', 'AccountController@edit')->name('account.edit');
 Route::patch('/account', 'AccountController@update')->name('account.update');
 
+Route::post('/subscriber', 'SubscriberController@store')->name('subscriber.store');
+Route::delete('/subscriber', 'SubscriberController@destroy')->name('subscriber.destroy');
+
 Route::get('/password', 'Auth\PasswordController@edit')->name('password.edit');
 Route::patch('/password', 'Auth\PasswordController@update')->name('password.update');
 

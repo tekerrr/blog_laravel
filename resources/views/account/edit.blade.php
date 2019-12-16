@@ -74,10 +74,20 @@
                 </form>
 
                 <!--    Subscribe    -->
-                <form class="form row form-group" action="" method="POST">
-                    <label for="subscribe" class="text-primary col align-self-end">Подписка на новые статьи</label>
-                    <input type="submit" class="btn btn-primary btn-md rounded-0 col-4" id="subscribe" value="Оформить">
-                </form>
+                @if ($user->isSubscriber())
+                    <form class="form row form-group" action="{{ route('subscriber.destroy') }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <label for="unsubscribe" class="text-primary col align-self-end">Подписка оформлена</label>
+                        <input type="submit" class="btn btn-outline-danger btn-md rounded-0 col-4" id="unsubscribe" value="Отписаться">
+                    </form>
+                @else
+                    <form class="form row form-group" action="{{ route('subscriber.store') }}" method="POST">
+                        @csrf
+                        <label for="subscribe" class="text-primary col align-self-end">Подписка на новые статьи</label>
+                        <input type="submit" class="btn btn-primary btn-md rounded-0 col-4" id="subscribe" value="Оформить">
+                    </form>
+                @endif
 
             </div>
 

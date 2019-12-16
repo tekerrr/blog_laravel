@@ -12,9 +12,24 @@ class User extends Authenticatable
     protected $fillable = ['name', 'email', 'password', 'about'];
     protected $hidden = ['password', 'remember_token'];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function (User $user) {
+            $user->subscription()->delete();
+        });
+    }
+
+
     public function roles()
     {
         return $this->belongsToMany(Role::class);
+    }
+
+    public function subscription()
+    {
+        return $this->hasOne(Subscriber::class, 'email', 'email');
     }
 
     public function hasRole(string $role): bool
@@ -47,5 +62,10 @@ class User extends Authenticatable
     public function isStuff(): bool
     {
         return $this->hasRoles(['admin', 'author']);
+    }
+
+    public function isSubscriber()
+    {
+        return $this->subscription()->exists();
     }
 }

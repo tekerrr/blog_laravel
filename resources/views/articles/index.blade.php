@@ -13,7 +13,7 @@
 
         {{ $articles->onEachSide(2)->links('pagination.view') }}
 
-        @includeWhen(true, 'subscription.view')
+        @includeWhen(! auth()->check() || ! auth()->user()->isSubscriber(), 'subscription.view')
 
     </div>
 @endsection

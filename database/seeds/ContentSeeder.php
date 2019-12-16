@@ -17,5 +17,10 @@ class ContentSeeder extends Seeder
         });
 
         factory(\App\Page::class)->create();
+
+        factory(\App\Subscriber::class, 5)->create();
+        factory(\App\User::class, 5)->create()->map(function (\App\User $user) {
+            $user->subscription()->create();
+        });
     }
 }

@@ -39,7 +39,34 @@ class UserTest extends TestCase
         $this->assertTrue($user->hasRole($roles->first()->role));
         $this->assertTrue($user->hasRole($roles->last()->role));
         $this->assertFalse($user->hasRole($this->faker->words(2, true)));
-        $this->assertFalse($user->hasRoles($this->faker->words(2)));
+        $this->assertFalse($user->hasRoles($this->faker->unique()->words(2)));
+    }
+
+    /** @test */
+    public function a_user_can_have_subscription()
+    {
+        // Arrange
+        $user = $this->createUser();
+
+        // Act
+        $user->subscription()->create();
+
+        // Assert
+        $this->assertEquals($user->email, $user->subscription->email);
+    }
+
+    /** @test */
+    public function a_subscription_is_deleted_when_the_user_is_deleted()
+    {
+        // Arrange
+        $user = $this->createUser();
+        $user->subscription()->create();
+
+        // Act
+        $user->delete();
+
+        // Assert
+        $this->assertDatabaseMissing((new \App\Subscriber())->getTable(), ['email' => $user->email]);
     }
 
     /** @test */
@@ -121,7 +148,7 @@ class UserTest extends TestCase
     }
 
     /** @test */
-    public function an_user_is_not_defined_as_author()
+    public function a_user_is_not_defined_as_author()
     {
         // Arrange
         $user = $this->createUser();
@@ -167,6 +194,33 @@ class UserTest extends TestCase
 
         // Act
         $response = $user->isStuff();
+
+        // Assert
+        $this->assertFalse($response);
+    }
+
+    /** @test */
+    public function a_user_with_subscription_is_defined_as_subscriber()
+    {
+        // Arrange
+        $user = $this->createUser();
+        $user->subscription()->create();
+
+        // Act
+        $response = $user->isSubscriber();
+
+        // Assert
+        $this->assertTrue($response);
+    }
+
+    /** @test */
+    public function a_user_without_subscription_is_not_defined_as_subscriber()
+    {
+        // Arrange
+        $user = $this->createUser();
+
+        // Act
+        $response = $user->isSubscriber();
 
         // Assert
         $this->assertFalse($response);
