@@ -12,7 +12,7 @@ class HasImageTraitWithArticleClassTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_article_can_have_image()
+    public function a_article_can_have_an_image()
     {
         // Arrange
         $article = factory(Article::class)->create();
@@ -26,7 +26,7 @@ class HasImageTraitWithArticleClassTest extends TestCase
     }
 
     /** @test */
-    public function image_is_deleted_when_the_article_is_deleted()
+    public function an_image_is_deleted_when_the_article_is_deleted()
     {
         // Arrange
         factory(Image::class, 2)->create();
