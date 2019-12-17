@@ -11,15 +11,16 @@
             <!--    Avatar    -->
             <div class="col-4">
                 <img src="{{ $user->getImageUrl() ?? '/img/default-avatar.png' }}" alt="post img" class="img-fluid ">
-                <div class="row justify-content-start py-3">
-                    <form class="form" enctype="multipart/form-data" action="{{ route('avatar.update') }}" method="POST">
+                <div class="row py-3">
+                    <form class="form col-6 px-0" enctype="multipart/form-data" action="{{ route('avatar.update') }}" method="POST">
                         @csrf
                         @method('PATCH')
-                        <label class="btn btn-primary rounded-0 mx-3 my-0">
+                        <label class="btn btn-primary rounded-0 mx-3 my-0 @error('avatar') is-invalid @enderror">
                             Загрузить аватар <input type="file" name="avatar" onchange="form.submit()" hidden>
                         </label>
+                        @include('layout.input.error', ['name' => 'avatar'])
                     </form>
-                    <form method="POST" action="{{ route('avatar.destroy') }}">
+                    <form class="ml-0" method="POST" action="{{ route('avatar.destroy') }}">
                         @csrf
                         @method('DELETE')
                         <input type="submit" class="btn btn-outline-primary rounded-0" value="Удалить">

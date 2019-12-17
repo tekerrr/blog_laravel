@@ -9,7 +9,7 @@ trait HasImage
     public static function bootHasImage()
     {
         static::deleting(function ($model) {
-            $model->image()->delete();
+            $model->deleteImage();
         });
     }
 
@@ -18,22 +18,20 @@ trait HasImage
         return $this->morphOne(Image::class, 'imageable');
     }
 
-    public function getImageUrl()
-    {
-        return $this->image ? \Storage::url($this->image->path) : null;
-    }
-
-    public function updateImage($path)
+    public function saveImage($path)
     {
         $this->deleteImage();
         $this->image()->create(['path' => $path]);
+        $this->refresh();
     }
 
     public function deleteImage()
     {
-        if ($this->image) {
-            \Storage::delete($this->image->path);
-            $this->image()->delete();
-        }
+        optional($this->image)->delete();
+    }
+
+    public function getImageUrl()
+    {
+        return $this->image ? \Storage::url($this->image->path) : null;
     }
 }

@@ -13,14 +13,12 @@ class AvatarController extends Controller
 
     public function update()
     {
-        if (! ($path = request()->file('avatar')->store('public/avatars'))) {
-            flash('Ошибка при загрузке файла', 'danger');
-            return back();
-        }
+        request()->validate([
+            'avatar' => 'required|file|image|max:' . config('content.avatar.max_size'),
+        ]);
 
-        // TODO добавить проверку на размер
-
-        auth()->user()->updateImage($path);
+        $path = request()->file('avatar')->store('public/avatars');
+        auth()->user()->saveImage($path);
 
         flash('Аватар обновлён.');
         return back();
