@@ -4,78 +4,81 @@
 namespace Tests;
 
 
-use Faker\Factory;
-
 trait WithRoles
 {
-    private function createAdmin() : \App\User
+    protected function createUser(array $attributes = []) : \App\User
     {
-        return factory(\App\User::class)->create()->addRole('admin');
+        return factory(\App\User::class)->create($attributes);
     }
 
-    private function createAuthor() : \App\User
+    protected function createUserWithRole(string $role = 'user', array $attributes = []) : \App\User
     {
-        return factory(\App\User::class)->create()->addRole('author');
-    }
+        $user = $this->createUser($attributes);
 
-    private function createUser() : \App\User
-    {
-        return factory(\App\User::class)->create();
-    }
-
-    private function actingAsAdmin() : \App\User
-    {
-        $this->actingAs($admin = $this->createAdmin());
-
-        return $admin;
-    }
-
-    private function actingAsAuthor() : \App\User
-    {
-        $this->actingAs($author = $this->createAuthor());
-
-        return $author;
-    }
-
-    private function actingAsUser() : \App\User
-    {
-        $this->actingAs($user = $this->createUser());
+        if ($role && $role != 'user') {
+            $user->addRole($role);
+        }
 
         return $user;
     }
 
-    public function RoleProvider()
+    protected function actingAsUser(array $attributes = []) : \App\User
     {
-        $faker = Factory::create();
+        $this->actingAs($user = $this->createUser($attributes));
 
+        return $user;
+    }
+
+    protected function actingAsRole($role = 'user', array $attributes = []) : ?\App\User
+    {
+        if ($role == 'guest') {
+            return null;
+        }
+
+        $this->actingAs($user = $this->createUserWithRole($role, $attributes));
+
+        return $user;
+    }
+
+    /**
+     * role: user, author, admin
+     * status: null, stuff, admin
+     * @return array
+     */
+    public function userProvider()
+    {
+        return [
+            'user'   => ['user', collect()],
+            'author' => ['author', collect(['author', 'stuff'])],
+            'admin'  => ['admin', collect(['admin', 'stuff'])],
+        ];
+    }
+
+    /**
+     * role: guest, user
+     * auth: true, false
+     * @return array
+     */
+    public function basicVisitorProvider()
+    {
         return [
             'guest'  => ['guest', false],
             'user'   => ['user', true],
-            'author' => ['author', true],
-            'admin'  => ['admin', true],
         ];
     }
 
-    public function AuthRoleProvider()
+    /**
+     * role: guest, user, author, admin
+     * status: null, author, admin, stuff
+     * @return array
+     */
+    public function allVisitorProvider()
     {
-        $faker = Factory::create();
-
         return [
-            'user'   => ['user'],
-            'author' => ['author'],
-            'admin'  => ['admin'],
+            'guest'  => ['guest', collect()],
+            'user'   => ['user', collect(['auth'])],
+            'author' => ['author', collect(['auth', 'author', 'stuff'])],
+            'admin'  => ['admin', collect(['auth', 'admin', 'stuff'])],
         ];
-    }
-
-    protected function actingAsRole($role) : ?\App\User
-    {
-        $roles = [
-            'guest'  => null,
-            'user'   => 'actingAsUser',
-            'author' => 'actingAsAuthor',
-            'admin'  => 'actingAsAdmin',
-        ];
-
-        return $roles[$role] ? $this->{$roles[$role]}() : null;
     }
 }

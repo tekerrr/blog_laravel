@@ -19,18 +19,4 @@ class BaseRoutesTest extends TestCase
         // Assert
         $response->assertStatus(302);
     }
-
-    /** @test */
-    public function anyone_can_view_the_article_page()
-    {
-        // Arrange
-        $article = factory(Article::class)->create();
-
-        // Act
-        $response = $this->get('/articles/' . $article->id);
-
-        // Assert
-        $response->assertViewIs('articles.show');
-        $response->assertSeeText($article->body);
-    }
 }

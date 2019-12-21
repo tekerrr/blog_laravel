@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Collection;
 use Tests\TestCase;
 use Tests\WithRoles;
 
@@ -82,121 +83,58 @@ class UserTest extends TestCase
         $this->assertEquals($role, $user->roles->first()->role);
     }
 
-    /** @test */
-    public function an_admin_is_defined_as_admin()
+    /**
+     * @test
+     * @dataProvider userProvider
+     * @param string $role
+     * @param Collection $status
+     */
+    public function an_admin_is_defined_as_admin($role, $status)
     {
         // Arrange
-        $user = $this->createAdmin();
+        $user = $this->createUserWithRole($role);
 
         // Act
         $response = $user->isAdmin();
 
         // Assert
-        $this->assertTrue($response);
+        $this->assertEquals($status->contains('admin'), $response);
     }
 
-    /** @test */
-    public function an_author_is_not_defined_as_admin()
+    /**
+     * @test
+     * @dataProvider userProvider
+     * @param string $role
+     * @param Collection $status
+     */
+    public function an_author_is_defined_as_author($role, $status)
     {
         // Arrange
-        $user = $this->createAuthor();
-
-        // Act
-        $response = $user->isAdmin();
-
-        // Assert
-        $this->assertFalse($response);
-    }
-
-    /** @test */
-    public function a_user_is_not_defined_as_admin()
-    {
-        // Arrange
-        $user = $this->createUser();
-
-        // Act
-        $response = $user->isAdmin();
-
-        // Assert
-        $this->assertFalse($response);
-    }
-
-    /** @test */
-    public function an_author_is_defined_as_author()
-    {
-        // Arrange
-        $user = $this->createAuthor();
+        $user = $this->createUserWithRole($role);
 
         // Act
         $response = $user->isAuthor();
 
         // Assert
-        $this->assertTrue($response);
+        $this->assertEquals($status->contains('author'), $response);
     }
 
-    /** @test */
-    public function an_admin_is_not_defined_as_author()
+    /**
+     * @test
+     * @dataProvider userProvider
+     * @param string $role
+     * @param Collection $status
+     */
+    public function an_author_or_an_admin_is_defined_as_stuff($role, $status)
     {
         // Arrange
-        $user = $this->createAdmin();
-
-        // Act
-        $response = $user->isAuthor();
-
-        // Assert
-        $this->assertFalse($response);
-    }
-
-    /** @test */
-    public function a_user_is_not_defined_as_author()
-    {
-        // Arrange
-        $user = $this->createUser();
-
-        // Act
-        $response = $user->isAuthor();
-
-        // Assert
-        $this->assertFalse($response);
-    }
-
-    /** @test */
-    public function an_admin_is_defined_as_stuff()
-    {
-        // Arrange
-        $user = $this->createAdmin();
+        $user = $this->createUserWithRole($role);
 
         // Act
         $response = $user->isStuff();
 
         // Assert
-        $this->assertTrue($response);
-    }
-
-    /** @test */
-    public function an_author_is_defined_as_stuff()
-    {
-        // Arrange
-        $user = $this->createAuthor();
-
-        // Act
-        $response = $user->isStuff();
-
-        // Assert
-        $this->assertTrue($response);
-    }
-
-    /** @test */
-    public function an_user_is_not_defined_as_stuff()
-    {
-        // Arrange
-        $user = $this->createUser();
-
-        // Act
-        $response = $user->isStuff();
-
-        // Assert
-        $this->assertFalse($response);
+        $this->assertEquals($status->contains('stuff'), $response);
     }
 
     /** @test */

@@ -2,11 +2,9 @@
 
 namespace Tests\Feature\Common;
 
-use App\User;
-use Faker\Factory;
+
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
@@ -19,11 +17,11 @@ class AccountTest extends TestCase
 
     /**
      * @test
-     * @dataProvider RoleProvider
+     * @dataProvider basicVisitorProvider
      * @param $role
-     * @param $can
+     * @param $auth
      */
-    public function a_visitor_can_view_his_account_page($role, $can)
+    public function a_user_can_view_his_account_page($role, $auth)
     {
         // Arrange
         $this->actingAsRole($role);
@@ -32,7 +30,7 @@ class AccountTest extends TestCase
         $response = $this->get('/account');
 
         // Assert
-        if ($can) {
+        if ($auth) {
             $response->assertViewIs('account.edit');
             $response->assertSeeText('Личный кабинет');
         } else {
@@ -42,11 +40,11 @@ class AccountTest extends TestCase
 
     /**
      * @test
-     * @dataProvider RoleProvider
+     * @dataProvider basicVisitorProvider
      * @param $role
-     * @param $can
+     * @param $auth
      */
-    public function a_visitor_can_view_change_password_page($role, $can)
+    public function a_user_can_view_change_password_page($role, $auth)
     {
         // Arrange
         $this->actingAsRole($role);
@@ -55,7 +53,7 @@ class AccountTest extends TestCase
         $response = $this->get('/password');
 
         // Assert
-        if ($can) {
+        if ($auth) {
             $response->assertViewIs('auth.password.edit');
             $response->assertSeeText('Смена пароля');
         } else {
@@ -63,37 +61,25 @@ class AccountTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     * @dataProvider AuthRoleProvider
-     * @param $role
-     */
-    public function a_visitor_can_view_his_avatar_on_his_account_page($role)
+    /** @test */
+    public function a_user_can_view_his_avatar_on_his_account_page()
     {
         // Arrange
-        $visitor = $this->actingAsRole($role);
-        $path = $this->getImage();
-        $visitor->image()->create(['path' => $path]);
+        $user = $this->actingAsUser();
+        $user->image()->create(['path' => $this->getImage()]);
 
         // Act
         $response = $this->get('/account');
 
         // Assert
-        $response->assertSee(\Storage::url($path));
-
-        // Clean
-        $this->deleteImage($path);
+        $response->assertSee(\Storage::url($this->image));
     }
 
-    /**
-     * @test
-     * @dataProvider AuthRoleProvider
-     * @param $role
-     */
-    public function a_visitor_without_avatar_can_view_default_avatar_on_his_account_page($role)
+    /** @test */
+    public function a_user_without_avatar_can_view_default_avatar_on_his_account_page()
     {
         // Arrange
-        $visitor = $this->actingAsRole($role);
+        $this->actingAsUser();
 
         // Act
         $response = $this->get('/account');
@@ -104,11 +90,11 @@ class AccountTest extends TestCase
 
     /**
      * @test
-     * @dataProvider RoleProvider
+     * @dataProvider basicVisitorProvider
      * @param $role
-     * @param $can
+     * @param $auth
      */
-    public function a_visitor_can_update_his_account_data($role, $can)
+    public function a_user_can_update_his_account_data($role, $auth)
     {
         // Arrange
         $visitor = $this->actingAsRole($role);
@@ -119,7 +105,7 @@ class AccountTest extends TestCase
         $response = $this->patch('/account', $attributes);
 
         // Assert
-        if ($can) {
+        if ($auth) {
             $this->assertDatabaseHas('users', Arr::only($attributes, ['name']));
         } else {
             $response->assertRedirect('/login');
@@ -128,17 +114,16 @@ class AccountTest extends TestCase
 
     /**
      * @test
-     * @dataProvider RoleProvider
+     * @dataProvider basicVisitorProvider
      * @param $role
-     * @param $can
+     * @param $auth
      */
-    public function a_visitor_can_update_his_password($role, $can)
+    public function a_user_can_update_his_password($role, $auth)
     {
         // Arrange
-        $visitor = $this->actingAsRole($role);
         $currentPassword = $this->faker->password;
         $newPassword = $this->faker->password;
-        optional($visitor)->update(['password' => Hash::make($currentPassword)]);
+        $visitor = $this->actingAsRole($role, ['password' => Hash::make($currentPassword)]);
         $attributes = [
             'current-password' => $currentPassword,
             'password' => $newPassword,
@@ -149,7 +134,7 @@ class AccountTest extends TestCase
         $response = $this->patch('/password', $attributes);
 
         // Assert
-        if ($can) {
+        if ($auth) {
             $this->post('/logout');
             $this->post('/login', ['email' => $visitor->email, 'password' => $newPassword]);
             $this->assertTrue(auth()->check());
@@ -158,19 +143,14 @@ class AccountTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     * @dataProvider AuthRoleProvider
-     * @param $role
-     */
-    public function a_visitor_cannot_update_his_password_with_wrong_current_password($role)
+    /** @test */
+    public function a_user_cannot_update_his_password_with_wrong_current_password()
     {
         // Arrange
-        $this->actingAsRole($role);
-        $newPassword = $this->faker->password;
+        $this->actingAsUser();
         $attributes = [
             'current-password' => $this->faker->password,
-            'password' => $newPassword,
+            'password' => ($newPassword = $this->faker->password),
             'password_confirmation' => $newPassword,
         ];
 
@@ -183,24 +163,23 @@ class AccountTest extends TestCase
 
     /**
      * @test
-     * @dataProvider RoleProvider
+     * @dataProvider basicVisitorProvider
      * @param $role
-     * @param $can
+     * @param $auth
      */
-    public function a_visitor_can_upload_new_avatar($role, $can)
+    public function a_user_can_upload_new_avatar($role, $auth)
     {
         // Arrange
         $visitor = $this->actingAsRole($role);
 
         // Act
         $response = $this->json('PATCH','/avatar', [
-            'avatar' => UploadedFile::fake()->image('new_avatar.jpg'),
+            'avatar' => $this->getUploadedImage(),
         ]);
 
         // Assert
-        if ($can) {
-            \Storage::disk('local')->assertExists($visitor->image->path);
-            $this->deleteImage($visitor->image->path);
+        if ($auth) {
+            \Storage::disk('local')->assertExists($this->image = $visitor->image->path);
         } else {
             $response->assertStatus(401);
         }
@@ -208,17 +187,17 @@ class AccountTest extends TestCase
 
     /**
      * @test
-     * @dataProvider RoleProvider
+     * @dataProvider basicVisitorProvider
      * @param $role
-     * @param $can
+     * @param $auth
      */
-    public function a_visitor_can_delete_his_avatar($role, $can)
+    public function a_user_can_delete_his_avatar($role, $auth)
     {
         // Arrange
         $visitor = $this->actingAsRole($role);
-        if ($can) {
+        if ($auth) {
             $this->json('PATCH','/avatar', [
-                'avatar' => UploadedFile::fake()->image('new_avatar.jpg'),
+                'avatar' => $this->getUploadedImage(),
             ]);
         }
 
@@ -226,7 +205,7 @@ class AccountTest extends TestCase
         $response = $this->delete('/avatar');
 
         // Assert
-        if ($can) {
+        if ($auth) {
             \Storage::disk('local')->assertMissing($visitor->image->path);
         } else {
             $response->assertRedirect('/login');

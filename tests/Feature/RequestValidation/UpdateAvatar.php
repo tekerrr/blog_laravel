@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\RequestValidation;
 
-use App\User;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -34,14 +33,12 @@ class UpdateAvatar extends TestCase
         $user = $this->actingAsUser();
 
         // Act
-        $attributes['avatar'] = UploadedFile::fake()->image('new_avatar.jpg');
+        $attributes['avatar'] = $this->getUploadedImage();
         $response = $this->patch('/avatar', $attributes);
+        $this->image = $user->image->path;
 
         // Assert
         $response->assertSessionHasNoErrors();
-
-        // Clean
-        $this->deleteImage($user->image->path);
     }
 
     /**

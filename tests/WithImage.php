@@ -8,14 +8,27 @@ use Illuminate\Http\UploadedFile;
 
 trait WithImage
 {
-    public function getImage(string $name = 'image.jpg')
+    protected $image;
+
+    protected function getImage(string $name = 'image.jpg')
     {
-        return \Storage::putFile('/public', UploadedFile::fake()->image('image.jpg'));
+        $this->image = \Storage::putFile('/public', UploadedFile::fake()->image('image.jpg'));
+        return $this->image;
     }
 
-    public function deleteImage(string $path)
+    protected function getUploadedImage(string $name = 'image.jpg')
     {
-        \Storage::delete($path);
-        \Storage::assertMissing($path);
+        return UploadedFile::fake()->image($name);
+    }
+
+    /** @after */
+    public function tearDownWithImage()
+    {
+        $this->createApplication();
+
+        if ($this->image) {
+            \Storage::delete($this->image);
+            \Storage::assertMissing($this->image);
+        }
     }
 }

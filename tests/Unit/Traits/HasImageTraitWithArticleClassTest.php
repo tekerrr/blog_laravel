@@ -77,17 +77,13 @@ class HasImageTraitWithArticleClassTest extends TestCase
     {
         // Arrange
         $article = factory(Article::class)->create();
-        $path = $this->getImage();
-        $article->image()->create(['path' => $path]);
+        $article->image()->create(['path' => $this->getImage()]);
 
         // Act
         $response = $article->getImageUrl();
 
         // Assert
-        $this->assertEquals(\Storage::url($path), $response);
-
-        // Clean
-        $this->deleteImage($path);
+        $this->assertEquals(\Storage::url($this->image), $response);
     }
 
     /** @test */
