@@ -8,11 +8,10 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 use Tests\WithImage;
-use Tests\WithRoles;
 
 class UpdateAvatar extends TestCase
 {
-    use RefreshDatabase, WithFaker, WithRoles, WithImage;
+    use RefreshDatabase, WithFaker, WithImage;
 
     public function invalidDataProvider()
     {

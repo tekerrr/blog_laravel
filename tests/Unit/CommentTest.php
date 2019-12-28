@@ -6,11 +6,10 @@ use App\Comment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use Tests\WithRoles;
 
 class CommentTest extends TestCase
 {
-    use RefreshDatabase, WithFaker, WithRoles;
+    use RefreshDatabase, WithFaker;
 
     /** @test */
     public function the_class_is_using_can_be_activated_trait_correctly()

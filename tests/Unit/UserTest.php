@@ -6,11 +6,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Collection;
 use Tests\TestCase;
-use Tests\WithRoles;
 
 class UserTest extends TestCase
 {
-    use RefreshDatabase, WithFaker, WithRoles;
+    use RefreshDatabase, WithFaker;
 
     /** @test */
     public function the_class_is_using_has_image_trait_correctly()
@@ -89,7 +88,7 @@ class UserTest extends TestCase
      * @param string $role
      * @param Collection $status
      */
-    public function an_admin_is_defined_as_admin($role, $status)
+    public function method_is_admin_validates_admin_role_correctly($role, $status)
     {
         // Arrange
         $user = $this->createUserWithRole($role);
@@ -107,7 +106,7 @@ class UserTest extends TestCase
      * @param string $role
      * @param Collection $status
      */
-    public function an_author_is_defined_as_author($role, $status)
+    public function method_is_author_validates_author_role_correctly($role, $status)
     {
         // Arrange
         $user = $this->createUserWithRole($role);
@@ -125,7 +124,7 @@ class UserTest extends TestCase
      * @param string $role
      * @param Collection $status
      */
-    public function an_author_or_an_admin_is_defined_as_stuff($role, $status)
+    public function method_is_stuff_validates_stuff_roles_correctly($role, $status)
     {
         // Arrange
         $user = $this->createUserWithRole($role);

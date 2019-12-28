@@ -6,11 +6,10 @@ use App\Subscriber;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use Tests\WithRoles;
 
 class SubscribersTest extends TestCase
 {
-    use RefreshDatabase, WithFaker, WithRoles;
+    use RefreshDatabase, WithFaker;
 
     /** @test */
     public function a_guest_can_view_the_subscribe_button_on_the_article_list_page()

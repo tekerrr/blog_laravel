@@ -6,11 +6,10 @@ use Faker\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use Tests\WithRoles;
 
 class UpdatePassword extends TestCase
 {
-    use RefreshDatabase, WithFaker, WithRoles;
+    use RefreshDatabase, WithFaker;
 
     public function invalidDataProvider()
     {

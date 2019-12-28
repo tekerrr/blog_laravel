@@ -9,19 +9,18 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 use Tests\WithImage;
-use Tests\WithRoles;
 
 class AccountTest extends TestCase
 {
-    use RefreshDatabase, WithFaker, WithRoles, WithImage;
+    use RefreshDatabase, WithFaker, WithImage;
 
     /**
      * @test
-     * @dataProvider basicVisitorProvider
+     * @dataProvider baseVisitorProvider
      * @param $role
      * @param $auth
      */
-    public function a_user_can_view_his_account_page($role, $auth)
+    public function only_authorized_user_can_view_his_account_page($role, $auth)
     {
         // Arrange
         $this->actingAsRole($role);
@@ -40,11 +39,11 @@ class AccountTest extends TestCase
 
     /**
      * @test
-     * @dataProvider basicVisitorProvider
+     * @dataProvider baseVisitorProvider
      * @param $role
      * @param $auth
      */
-    public function a_user_can_view_change_password_page($role, $auth)
+    public function only_authorized__can_view_change_password_page($role, $auth)
     {
         // Arrange
         $this->actingAsRole($role);
@@ -90,11 +89,11 @@ class AccountTest extends TestCase
 
     /**
      * @test
-     * @dataProvider basicVisitorProvider
+     * @dataProvider baseVisitorProvider
      * @param $role
      * @param $auth
      */
-    public function a_user_can_update_his_account_data($role, $auth)
+    public function only_authorized_user_can_update_his_account_data($role, $auth)
     {
         // Arrange
         $visitor = $this->actingAsRole($role);
@@ -114,11 +113,11 @@ class AccountTest extends TestCase
 
     /**
      * @test
-     * @dataProvider basicVisitorProvider
+     * @dataProvider baseVisitorProvider
      * @param $role
      * @param $auth
      */
-    public function a_user_can_update_his_password($role, $auth)
+    public function only_authorized_user_can_update_his_password($role, $auth)
     {
         // Arrange
         $currentPassword = $this->faker->password;
@@ -163,11 +162,11 @@ class AccountTest extends TestCase
 
     /**
      * @test
-     * @dataProvider basicVisitorProvider
+     * @dataProvider baseVisitorProvider
      * @param $role
      * @param $auth
      */
-    public function a_user_can_upload_new_avatar($role, $auth)
+    public function only_authorized_user_can_upload_new_avatar($role, $auth)
     {
         // Arrange
         $visitor = $this->actingAsRole($role);
@@ -187,11 +186,11 @@ class AccountTest extends TestCase
 
     /**
      * @test
-     * @dataProvider basicVisitorProvider
+     * @dataProvider baseVisitorProvider
      * @param $role
      * @param $auth
      */
-    public function a_user_can_delete_his_avatar($role, $auth)
+    public function only_authorized_user_can_delete_his_avatar($role, $auth)
     {
         // Arrange
         $visitor = $this->actingAsRole($role);

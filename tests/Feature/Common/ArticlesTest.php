@@ -6,11 +6,10 @@ use App\Article;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use Tests\WithRoles;
 
 class ArticlesTest extends TestCase
 {
-    use RefreshDatabase, WithFaker, WithRoles;
+    use RefreshDatabase, WithFaker;
 
     /** @test */
     public function anyone_can_view_the_article_list_page()

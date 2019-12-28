@@ -7,19 +7,18 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Collection;
 use Tests\TestCase;
-use Tests\WithRoles;
 
 class CommentsTest extends TestCase
 {
-    use RefreshDatabase, WithFaker, WithRoles;
+    use RefreshDatabase, WithFaker;
 
     /**
      * @test
-     * @dataProvider allVisitorProvider
+     * @dataProvider visitorProvider
      * @param string $role
      * @param Collection $status
      */
-    public function a_authorized_visitor_can_add_a_comment_to_the_article($role, $status)
+    public function only_authorized_visitor_can_add_a_comment_to_the_article($role, $status)
     {
         // Arrange
         $this->actingAsRole($role);
@@ -39,11 +38,11 @@ class CommentsTest extends TestCase
 
     /**
      * @test
-     * @dataProvider allVisitorProvider
+     * @dataProvider visitorProvider
      * @param string $role
      * @param Collection $status
      */
-    public function a_stuff_comment_is_shown_without_moderation($role, $status)
+    public function only_stuff_comment_is_shown_without_moderation($role, $status)
     {
         // Arrange
         $this->actingAsRole($role);

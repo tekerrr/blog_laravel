@@ -6,11 +6,10 @@ use App\Article;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use Tests\WithRoles;
 
 class StoreComment extends TestCase
 {
-    use RefreshDatabase, WithFaker, WithRoles;
+    use RefreshDatabase, WithFaker;
 
     /** @test */
     public function the_valid_data_passes_the_validation_rules()
