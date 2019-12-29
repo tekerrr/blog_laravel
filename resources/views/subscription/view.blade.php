@@ -1,6 +1,6 @@
 <div class="row my-4 px-0">
     <div class="ml-auto col-5">
-        <form class="form" action="{{ route('subscriber.store') }}" method="post">
+        <form class="form" action="{{ route('subscribe') }}" method="post">
             @csrf
 
             <div class="input-group">

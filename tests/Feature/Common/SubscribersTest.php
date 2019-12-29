@@ -35,7 +35,7 @@ class SubscribersTest extends TestCase
     }
 
     /** @test */
-    public function a_subscribed_user_can_view_the_subscribe_button_on_the_article_list_page()
+    public function a_subscribed_user_cannot_view_the_subscribe_button_on_the_article_list_page()
     {
         // Arrange
         $user = $this->actingAsUser();
@@ -82,7 +82,7 @@ class SubscribersTest extends TestCase
         $attributes = ['email' => $this->faker->email];
 
         // Act
-        $this->post('/subscriber', $attributes);
+        $this->post('/subscribe', $attributes);
 
         // Assert
         $this->assertDatabaseHas((new Subscriber())->getTable(), $attributes);
@@ -95,7 +95,7 @@ class SubscribersTest extends TestCase
         $user = $this->actingAsUser();
 
         // Act
-        $this->post('/subscriber');
+        $this->post('/subscribe');
 
         // Assert
         $this->assertTrue($user->isSubscriber());
@@ -109,10 +109,39 @@ class SubscribersTest extends TestCase
         $user->subscription()->create();
 
         // Act
-        $this->delete('/subscriber');
+        $this->post('/unsubscribe');
 
         // Assert
         $this->assertFalse($user->isSubscriber());
+    }
+
+    /** @test */
+    public function a_subscriber_can_unsubscribe_by_link()
+    {
+        // Arrange
+        $subscriber = factory(Subscriber::class)->create();
+        $link = \URL::signedRoute('unsubscribe.link', compact('subscriber'));
+
+        // Act
+        $this->get($link);
+
+        // Assert
+        $this->assertDatabaseMissing($subscriber->getTable(), ['email' => $subscriber->email]);
+    }
+
+    /** @test */
+    public function a_subscriber_cannot_unsubscribe_by_link_without_signature()
+    {
+        // Arrange
+        $subscriber = factory(Subscriber::class)->create();
+        $link = route('unsubscribe.link', compact('subscriber'));
+
+        // Act
+        $response = $this->get($link);
+
+        // Assert
+        $response->assertStatus(403);
+        $this->assertDatabaseHas($subscriber->getTable(), ['email' => $subscriber->email]);
     }
 
     /** @test */
@@ -123,7 +152,7 @@ class SubscribersTest extends TestCase
         $user->subscription()->create();
 
         // Act
-        $this->post('/subscriber');
+        $this->post('/subscribe');
 
         // Assert
         $this->assertEquals(1, Subscriber::count());

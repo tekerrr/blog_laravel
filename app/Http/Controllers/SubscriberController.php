@@ -12,7 +12,7 @@ class SubscriberController extends Controller
         $this->middleware('auth')->only('destroy');
     }
 
-    public function store()
+    public function subscribe()
     {
         if (auth()->check()) {
             auth()->user()->subscription()->create();
@@ -25,7 +25,7 @@ class SubscriberController extends Controller
         return back();
     }
 
-    public function destroy()
+    public function unsubscribe()
     {
         auth()->user()->subscription()->delete();
 
@@ -33,8 +33,14 @@ class SubscriberController extends Controller
         return back();
     }
 
-    public function destroyByLink()
+    public function unsubscribeByLink(Subscriber $subscriber)
     {
+        if (! request()->hasValidSignature()) {
+            abort(403);
+        }
 
+        $subscriber->delete();
+        flash('Вы отписались от получения сообщений о новых статьях.', 'danger');
+        return redirect()->route('articles.index');
     }
 }
