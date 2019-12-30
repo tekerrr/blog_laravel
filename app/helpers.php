@@ -25,3 +25,17 @@ if (! function_exists('is_current_route')) {
             : (request()->getUri() === route($name, $parameters));
     }
 }
+
+if (! function_exists('back_with_query')) {
+    /**
+     * @param array $parameters
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    function back_with_query(array $parameters)
+    {
+        $query = new \App\Http\Requests\Query();
+        $query->set($parameters);
+        $routeName = app('router')->getRoutes()->match(request()->create(url()->previous()))->getName();
+        return redirect()->route($routeName, $query->get());
+    }
+}

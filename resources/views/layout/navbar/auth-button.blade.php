@@ -5,7 +5,7 @@
         <div class="dropdown-menu">
             <a class="dropdown-item" href="{{ route('account.edit') }}">Профиль</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Админка</a>
+            <a class="dropdown-item" href="{{ route('admin.articles.index') }}">Администрирование</a>
             <div class="dropdown-divider"></div>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf

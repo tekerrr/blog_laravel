@@ -15,7 +15,7 @@
             </div>
 
             <div class="row mx-0 pt-4">
-                <input type="submit" class="btn btn-outline-primary btn-md rounded-0 ml-auto" value="Отравить">
+                <input type="submit" class="btn btn-outline-primary btn-md rounded-0 ml-auto" value="Отправить">
             </div>
         </form>
     </div>
