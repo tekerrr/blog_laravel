@@ -49,4 +49,9 @@ class ArticleController extends Controller
     {
         //
     }
+
+    public function activate(Article $article)
+    {
+        dd(request()->all());
+    }
 }

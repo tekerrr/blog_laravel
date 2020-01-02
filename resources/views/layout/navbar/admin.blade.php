@@ -1,8 +1,11 @@
 <nav class="navbar sticky-top navbar-expand-md navbar-dark bg-primary">
     <div class="container">
-        <a class="navbar-brand" href="{{ route('articles.index') }}">
+        <a class="navbar-brand mr-2" href="{{ route('articles.index') }}">
             <img src="/img/ico.png" class="d-inline-block align-top" alt="icon">
             MyBlog
+        </a>
+        <a class="badge badge-success" href="{{ route('admin.articles.index') }}">
+            admin
         </a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
@@ -12,14 +15,9 @@
 
         <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
             <ul class="navbar-nav">
-                @include('layout.navbar.items.item', ['name' => 'Главная', 'path' => route('articles.index'), 'active' => is_current_route('articles.index')])
-                @include('layout.navbar.items.dropdown-articles', ['article' => $articles, 'active' => is_current_route('articles.show')])
+                @include('layout.navbar.items.item', ['name' => 'Статьи', 'path' => route('admin.articles.index'), 'active' => is_current_route('admin.articles.index')])
 
-                @foreach ($pages as $page)
-                    @include('layout.navbar.items.item', ['name' => $page->title, 'path' => route('pages.show', $page), 'active' => is_current_route('pages.show', $page)])
-                @endforeach
-
-                @include('layout.navbar.items.auth-button')
+                @include('layout.navbar.items.auth-button-admin')
             </ul>
         </div>
     </div>

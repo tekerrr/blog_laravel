@@ -27,6 +27,7 @@ Route::resource('pages', 'PageController')->only('show');
 // Admin (stuff) paths
 Route::prefix('/admin')->name('admin.')->middleware(['auth'])->group(function () {
     Route::resource('articles', 'Admin\ArticleController');
+    Route::patch('articles/{article}/activate', 'Admin\ArticleController@activate')->name('article.activate');
 
     Route::patch('/per_page', 'Admin\AdminController@perPage')->name('per_page');
 });
