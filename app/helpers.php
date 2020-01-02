@@ -28,14 +28,12 @@ if (! function_exists('is_current_route')) {
 
 if (! function_exists('back_with_query')) {
     /**
-     * @param array $parameters
+     * @param array $arguments
      * @return \Illuminate\Http\RedirectResponse
      */
-    function back_with_query(array $parameters)
+    function back_with_query(array $arguments)
     {
-        $query = new \App\Http\Requests\Query();
-        $query->set($parameters);
-        $routeName = app('router')->getRoutes()->match(request()->create(url()->previous()))->getName();
-        return redirect()->route($routeName, $query->get());
+        $request = \Illuminate\Http\Request::create(url()->previous());
+        return redirect($request->fullUrlWithQuery($arguments));
     }
 }

@@ -44,13 +44,7 @@ class CustomPaginator
             return $queryBuilder->get();
         }
 
-        $queryBuilder = $queryBuilder->paginate($this->perPage);
-
-        if (! $this->isDefault()) {
-            $queryBuilder = $queryBuilder->appends(['items' => $this->perPage]);
-        }
-
-        return $queryBuilder;
+        return $this->build($queryBuilder);
     }
 
     public function isNeed()
@@ -61,5 +55,16 @@ class CustomPaginator
     public function isDefault()
     {
         return $this->perPage == config('content.custom_paginator.items');
+    }
+
+    protected function build(Builder $queryBuilder)
+    {
+        $queryBuilder = $queryBuilder->paginate($this->perPage);
+
+        if (! $this->isDefault()) {
+            $queryBuilder = $queryBuilder->appends(['items' => $this->perPage]);
+        }
+
+        return $queryBuilder;
     }
 }
