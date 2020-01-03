@@ -50,6 +50,18 @@ abstract class TestCase extends BaseTestCase
         ];
     }
 
+    /**
+     * bool: true, false
+     * @return array
+     */
+    public function booleanProvider()
+    {
+        return [
+            'true'  => [true],
+            'false' => [false],
+        ];
+    }
+
     protected function createUser(array $attributes = []) : \App\User
     {
         return factory(\App\User::class)->create($attributes);

@@ -136,30 +136,23 @@ class UserTest extends TestCase
         $this->assertEquals($status->contains('stuff'), $response);
     }
 
-    /** @test */
-    public function a_user_with_subscription_is_defined_as_subscriber()
+    /**
+     * @test
+     * @dataProvider booleanProvider
+     * @param boolean $boolean
+     */
+    public function only_user_with_subscription_is_defined_as_subscriber($boolean)
     {
         // Arrange
         $user = $this->createUser();
-        $user->subscription()->create();
+        if ($boolean) {
+            $user->subscription()->create();
+        }
 
         // Act
         $response = $user->isSubscriber();
 
         // Assert
-        $this->assertTrue($response);
-    }
-
-    /** @test */
-    public function a_user_without_subscription_is_not_defined_as_subscriber()
-    {
-        // Arrange
-        $user = $this->createUser();
-
-        // Act
-        $response = $user->isSubscriber();
-
-        // Assert
-        $this->assertFalse($response);
+        $this->assertEquals($boolean, $response);
     }
 }

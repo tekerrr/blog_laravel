@@ -21,8 +21,9 @@ class PagesTest extends TestCase
         $response = $this->get('/pages/' . $page->id);
 
         // Assert
-        $response->assertViewIs('pages.show');
-        $response->assertSeeText($page->body);
+        $response
+            ->assertViewIs('pages.show')
+            ->assertSeeText($page->body);
     }
 
     /** @test */
@@ -48,8 +49,9 @@ class PagesTest extends TestCase
         $response = $this->get('/articles/');
 
         // Assert
-        $response->assertSeeText($pages->first()->title);
-        $response->assertSeeText($pages->last()->title);
+        $response
+            ->assertSeeText($pages->first()->title)
+            ->assertSeeText($pages->last()->title);
     }
 
     /** @test */
@@ -63,7 +65,8 @@ class PagesTest extends TestCase
         $response = $this->get('/articles/');
 
         // Assert
-        $response->assertSeeText($activePage->title);
-        $response->assertDontSeeText($inactivePage->title);
+        $response
+            ->assertSeeText($activePage->title)
+            ->assertDontSeeText($inactivePage->title);
     }
 }

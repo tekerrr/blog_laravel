@@ -80,7 +80,7 @@ class CustomPaginatorTest extends TestCase
     }
 
     /** @test */
-    public function method_paginate_returns_paginator_when_paginator_is_necessary()
+    public function method_paginate_returns_paginator()
     {
         // Arrange
         factory(\App\Article::class, 33)->create();
@@ -94,10 +94,15 @@ class CustomPaginatorTest extends TestCase
         $this->assertEquals(config('content.custom_paginator.items'), $response->count());
     }
 
-    /** @test */
-    public function method_paginate_returns_paginator_without_links_with_items_query_when_is_default()
+    /**
+     * @test
+     * @dataProvider booleanProvider
+     * @param boolean $boolean
+     */
+    public function method_paginate_returns_paginator_with_links_with_items_query_only_when_paginator_is_not_default($boolean)
     {
         // Arrange
+        request()->merge($boolean ? ['items' => 20] : []);
         factory(\App\Article::class, 2)->create();
         $paginator = new CustomPaginator();
 
@@ -105,22 +110,7 @@ class CustomPaginatorTest extends TestCase
         $response = $paginator->paginate(\App\Article::where('id', '>=', 1));
 
         // Assert
-        $this->assertFalse(Str::contains($response->url(2), 'items='));
-    }
-
-    /** @test */
-    public function method_paginate_returns_paginator_with_links_with_items_query_when_is_not_default()
-    {
-        // Arrange
-        factory(\App\Article::class, 2)->create();
-        request()->merge(['items' => 20]);
-        $paginator = new CustomPaginator();
-
-        // Act
-        $response = $paginator->paginate(\App\Article::where('id', '>=', 1));
-
-        // Assert
-        $this->assertTrue(Str::contains($response->url(2), 'items=20'));
+        $this->assertEquals($boolean, Str::contains($response->url(2), 'items='));
     }
 
     /** @test */
@@ -139,30 +129,21 @@ class CustomPaginatorTest extends TestCase
         $this->assertEquals(\App\Article::count(), $response->count());
     }
 
-    /** @test */
-    public function method_is_need_returns_true_when_paginator_is_necessary()
+    /**
+     * @test
+     * @dataProvider booleanProvider
+     * @param boolean $boolean
+     */
+    public function method_is_need_returns_true_only_when_paginator_is_necessary($boolean)
     {
         // Arrange
+        request()->merge($boolean ? [] : ['items' => 'all']);
         $paginator = new CustomPaginator();
 
         // Act
         $response = $paginator->isNeed();
 
         // Assert
-        $this->assertTrue($response);
-    }
-
-    /** @test */
-    public function method_is_need_returns_false_when_paginator_is_not_necessary()
-    {
-        // Arrange
-        request()->merge(['items' => 'all']);
-        $paginator = new CustomPaginator();
-
-        // Act
-        $response = $paginator->isNeed();
-
-        // Assert
-        $this->assertFalse($response);
+        $this->assertEquals($boolean, $response);
     }
 }

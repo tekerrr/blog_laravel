@@ -30,8 +30,9 @@ class AccountTest extends TestCase
 
         // Assert
         if ($auth) {
-            $response->assertViewIs('account.edit');
-            $response->assertSeeText('Личный кабинет');
+            $response
+                ->assertViewIs('account.edit')
+                ->assertSeeText('Личный кабинет');
         } else {
             $response->assertRedirect('/login');
         }
@@ -53,8 +54,9 @@ class AccountTest extends TestCase
 
         // Assert
         if ($auth) {
-            $response->assertViewIs('auth.password.edit');
-            $response->assertSeeText('Смена пароля');
+            $response
+                ->assertViewIs('auth.password.edit')
+                ->assertSeeText('Смена пароля');
         } else {
             $response->assertRedirect('/login');
         }

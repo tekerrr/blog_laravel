@@ -25,30 +25,21 @@ class CanBeActivatedTraitWithArticleClassTest extends TestCase
         $this->assertEquals($articles->count(), $publishedArticlesNumber);
     }
 
-    /** @test */
-    public function an_active_article_is_defined_as_active()
+    /**
+     * @test
+     * @dataProvider booleanProvider
+     * @param boolean $boolean
+     */
+    public function only_active_article_is_defined_as_active($boolean)
     {
         // Arrange
-        $article = factory(Article::class)->create(['is_active' => true]);
+        $article = factory(Article::class)->create(['is_active' => $boolean]);
 
         // Act
         $response = $article->isActive();
 
         // Assert
-        $this->assertTrue($response);
-    }
-
-    /** @test */
-    public function an_inactive_article_is_not_defined_as_active()
-    {
-        // Arrange
-        $article = factory(Article::class)->create(['is_active' => false]);
-
-        // Act
-        $response = $article->isActive();
-
-        // Assert
-        $this->assertFalse($response);
+        $this->assertEquals($boolean, $response);
     }
 
     /** @test */

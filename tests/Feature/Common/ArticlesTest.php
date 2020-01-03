@@ -18,8 +18,25 @@ class ArticlesTest extends TestCase
         $response = $this->get('/articles');
 
         // Assert
-        $response->assertViewIs('articles.index');
-        $response->assertSeeText('Главная');
+        $response
+            ->assertViewIs('articles.index')
+            ->assertSeeText('Главная');
+    }
+
+    /** @test */
+    public function the_article_list_page_shows_only_active_articles()
+    {
+        // Arrange
+        $activeArticle = factory(Article::class)->create(['is_active' => true]);
+        $inactiveArticle = factory(Article::class)->create(['is_active' => false]);
+
+        // Act
+        $response = $this->get('/articles');
+
+        // Assert
+        $response
+            ->assertSeeText($activeArticle->title)
+            ->assertDontSeeText($inactiveArticle->title);
     }
 
     /** @test */
@@ -32,8 +49,9 @@ class ArticlesTest extends TestCase
         $response = $this->get('/articles/' . $article->id);
 
         // Assert
-        $response->assertViewIs('articles.show');
-        $response->assertSeeText($article->body);
+        $response
+            ->assertViewIs('articles.show')
+            ->assertSeeText($article->body);
     }
 
     /** @test */
@@ -48,9 +66,10 @@ class ArticlesTest extends TestCase
         $response = $this->get('/articles/' . $article->id);
 
         // Assert
-        $response->assertSeeText($articleComments->first()->body);
-        $response->assertSeeText($articleComments->last()->body);
-        $response->assertDontSeeText($otherComment->body);
+        $response
+            ->assertSeeText($articleComments->first()->body)
+            ->assertSeeText($articleComments->last()->body)
+            ->assertDontSeeText($otherComment->body);
     }
 
     /** @test */
