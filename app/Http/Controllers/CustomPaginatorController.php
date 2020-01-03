@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Service\CustomPaginator;
 
-class AdminController extends Controller
+class CustomPaginatorController extends Controller
 {
     public function perPage(CustomPaginator $paginator)
     {

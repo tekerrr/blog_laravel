@@ -1,4 +1,4 @@
-<form class="ml-auto" method="POST" action="{{ route('admin.per_page') }}">
+<form class="ml-auto" method="POST" action="{{ route('custom-controller.per-page') }}">
     @csrf
     @method('PATCH')
 

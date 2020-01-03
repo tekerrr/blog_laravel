@@ -52,7 +52,7 @@ class CustomPaginator
         return $this->perPage != 'all';
     }
 
-    public function isDefault()
+    protected function isDefault()
     {
         return $this->perPage == config('content.custom_paginator.items');
     }
