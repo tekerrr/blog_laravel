@@ -40,7 +40,7 @@ class ArticlesTest extends TestCase
     }
 
     /** @test */
-    public function the_article_list_page_shows_all_articles()
+    public function the_article_list_page_shows_active_and_inactive_articles()
     {
         // Arrange
         $this->actingAsRole('author');

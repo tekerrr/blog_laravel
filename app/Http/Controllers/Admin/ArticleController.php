@@ -78,7 +78,7 @@ class ArticleController extends Controller
         $article->delete();
 
         flash('Статья удалена', 'danger');
-        return redirect()->route('admin.articles.index');
+        return back();
     }
 
     public function setActiveStatus(Article $article)
@@ -98,7 +98,7 @@ class ArticleController extends Controller
     {
         $article->deactivate();
 
-        flash('Статья снята с публикации', 'danger');
+        flash('Статья скрыта', 'danger');
         return back();
     }
 

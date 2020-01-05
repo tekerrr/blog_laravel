@@ -10,12 +10,15 @@
                     <div class="mt-5 text-center">
                         <img src="{{ $article->getImageUrl() ?? '/img/article/default.svg' }}" alt="post img" class="img-fluid">
                     </div>
-                    <h1 class="text-center mt-4">{{ $article->title }}</h1>
+
+                    <h1 class="text-center mt-4">
+                        <a href="{{ route('articles.show', compact('article')) }}">{{ $article->title }}</a>
+                    </h1>
                     <p class=""><i>{{ $article->created_at }}</i></p>
                     {!! $article->body !!}
                 </article>
 
-                @include('comments.index', ['comments' => $article->comments])
+                @include('comments.admin', ['comments' => $article->comments])
 
                 @include('comments.create', compact('article'))
 

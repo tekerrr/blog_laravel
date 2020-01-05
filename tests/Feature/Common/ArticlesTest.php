@@ -5,6 +5,7 @@ namespace Tests\Feature\Common;
 use App\Article;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Collection;
 use Tests\TestCase;
 
 class ArticlesTest extends TestCase
@@ -52,6 +53,29 @@ class ArticlesTest extends TestCase
         $response
             ->assertViewIs('articles.show')
             ->assertSeeText($article->body);
+    }
+
+    /**
+     * @test
+     * @dataProvider visitorProvider
+     * @param string $role
+     * @param Collection $status
+     */
+    public function only_stuff_can_view_link_to_the_admin_article_page_on_the_article_page($role, $status)
+    {
+        // Arrange
+        $this->actingAsRole($role);
+        $article = factory(Article::class)->create();
+
+        // Act
+        $response = $this->get('articles/' . $article->id);
+
+        // Assert
+        if ($status->contains('stuff')) {
+            $response->assertSee(route('admin.articles.show', compact('article')));
+        } else {
+            $response->assertDontSee(route('admin.articles.show', compact('article')));
+        }
     }
 
     /** @test */
