@@ -30,5 +30,8 @@ Route::patch('/per-page', 'CustomPaginatorController@perPage')->name('custom-con
 // Admin (stuff) paths
 Route::prefix('/admin')->name('admin.')->middleware(['auth'])->group(function () {
     Route::resource('articles', 'Admin\ArticleController');
-    Route::patch('articles/{article}/set-active-status', 'Admin\ArticleController@setActiveStatus')->name('article.set-active-status');
+    Route::patch('articles/{article}/set-active-status', 'Admin\ArticleController@setActiveStatus')->name('articles.set-active-status');
+
+    Route::resource('comments', 'Admin\CommentController');
+    Route::patch('comments/{comment}/set-active-status', 'Admin\CommentController@setActiveStatus')->name('comments.set-active-status');
 });
