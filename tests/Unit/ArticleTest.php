@@ -42,12 +42,11 @@ class ArticleTest extends TestCase
     }
 
     /** @test */
-    public function method_previous_returns_previous_active_article()
+    public function method_previous_returns_previous_article()
     {
         // Arrange
         factory(Article::class, 2)->create();
-        $previous = factory(Article::class)->create();
-        factory(Article::class)->create(['is_active' => false]);
+        $previous = factory(Article::class)->create(['is_active' => false]);
         $article = factory(Article::class)->create();
 
         // Act
@@ -58,13 +57,12 @@ class ArticleTest extends TestCase
     }
 
     /** @test */
-    public function method_next_returns_next_active_article()
+    public function method_next_returns_next_article()
     {
         // Arrange
         factory(Article::class, 2)->create();
         $article = factory(Article::class)->create();
-        factory(Article::class)->create(['is_active' => false]);
-        $next = factory(Article::class)->create();
+        $next = factory(Article::class)->create(['is_active' => false]);
 
         // Act
         $response = $article->next();

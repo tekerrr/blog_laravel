@@ -22,11 +22,11 @@ class Article extends Model
 
     public function previous()
     {
-        return self::active()->where('id', '<', $this->id)->orderByDesc('id')->first();
+        return self::where('id', '<', $this->id)->orderByDesc('id')->first();
     }
 
     public function next()
     {
-        return self::active()->where('id', '>', $this->id)->first();
+        return self::where('id', '>', $this->id)->first();
     }
 }

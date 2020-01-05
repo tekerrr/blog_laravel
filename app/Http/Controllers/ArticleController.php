@@ -14,16 +14,6 @@ class ArticleController extends Controller
         return view('articles.index', compact('articles'));
     }
 
-    public function create()
-    {
-        //
-    }
-
-    public function store(Request $request)
-    {
-        //
-    }
-
     public function show(Article $article)
     {
         abort_if(! $article->isActive(), 404);
@@ -37,24 +27,9 @@ class ArticleController extends Controller
 
         return view('articles.show', [
             'article'  => $article,
-            'previous' => $this->getShowRoute($article->previous()),
-            'next'     => $this->getShowRoute($article->next())
+            'previous' => $this->getShowRoute($article->previousActive()),
+            'next'     => $this->getShowRoute($article->nextActive())
         ]);
-    }
-
-    public function edit($id)
-    {
-        //
-    }
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    public function destroy($id)
-    {
-        //
     }
 
     protected function getShowRoute($article): ?string

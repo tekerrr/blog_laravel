@@ -55,11 +55,12 @@ class ArticlesTest extends TestCase
     }
 
     /** @test */
-    public function anyone_can_view_the_article_page_with_comments()
+    public function anyone_can_view_the_article_page_with_active_comments()
     {
         // Arrange
         $article = factory(Article::class)->create();
-        $articleComments = factory(\App\Comment::class, 2)->create(['article_id' => $article->id]);
+        $activeArticleComment = factory(\App\Comment::class)->create(['article_id' => $article->id, 'is_active' => true]);
+        $inactiveArticleComment = factory(\App\Comment::class)->create(['article_id' => $article->id, 'is_active' => false]);
         $otherComment = factory(\App\Comment::class)->create();
 
         // Act
@@ -67,8 +68,8 @@ class ArticlesTest extends TestCase
 
         // Assert
         $response
-            ->assertSeeText($articleComments->first()->body)
-            ->assertSeeText($articleComments->last()->body)
+            ->assertSeeText($activeArticleComment->body)
+            ->assertDontSeeText($inactiveArticleComment->body)
             ->assertDontSeeText($otherComment->body);
     }
 

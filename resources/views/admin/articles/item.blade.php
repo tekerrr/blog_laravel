@@ -2,13 +2,13 @@
     <div class="col-1"><b>{{ $article->id }}</b></div>
     <div class="col-8"><a href="{{ route('admin.articles.show', compact('article')) }}">{{ $article->title }}</a></div>
 
-    <form class="ml-5 mr-auto" method="POST" action="{{ route('admin.article.activate', compact('article')) }}">
+    <form class="ml-5 mr-auto" method="POST" action="{{ route('admin.article.set-active-status', compact('article')) }}">
         @csrf
         @method('PATCH')
 
-        <input type="checkbox" data-toggle="toggle" {{ $article->isActive() ? 'checked' : '' }}
+        <input type="checkbox" name="active" data-toggle="toggle" {{ $article->isActive() ? 'checked' : '' }}
                class="mx-auto" data-onstyle="outline-primary" data-offstyle="outline-danger" data-style="squared" data-size="sm"
-               onchange="form.submit()" name="activate">
+               onchange="form.submit()">
     </form>
 
     <div class="btn-group">

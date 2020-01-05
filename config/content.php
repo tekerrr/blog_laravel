@@ -5,6 +5,12 @@ return [
         'max_size' => 2 * 1024, // Кб
     ],
 
+    'article' => [
+        'image' => [
+            'max_size' => 5 * 1024, // Кб
+        ],
+    ],
+
     'paginator' => [
         'items' => 10,
     ],

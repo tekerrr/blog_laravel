@@ -24,9 +24,8 @@ trait WithImage
     /** @after */
     public function tearDownWithImage()
     {
-        $this->createApplication();
-
         if ($this->image) {
+            $this->createApplication();
             \Storage::delete($this->image);
             \Storage::assertMissing($this->image);
         }

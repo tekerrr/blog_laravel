@@ -31,4 +31,14 @@ trait CanBeActivated
 
         return $this;
     }
+
+    public function previousActive()
+    {
+        return self::active()->where('id', '<', $this->id)->orderByDesc('id')->first();
+    }
+
+    public function nextActive()
+    {
+        return self::active()->where('id', '>', $this->id)->first();
+    }
 }
