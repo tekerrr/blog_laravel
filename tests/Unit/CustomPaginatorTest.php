@@ -87,7 +87,7 @@ class CustomPaginatorTest extends TestCase
         $paginator = new CustomPaginator();
 
         // Act
-        $response = $paginator->paginate(\App\Article::where('id', '>=', 1));
+        $response = $paginator->paginate(\App\Article::query());
 
         // Assert
         $this->assertEquals('Illuminate\Pagination\LengthAwarePaginator', get_class($response));
@@ -107,7 +107,7 @@ class CustomPaginatorTest extends TestCase
         $paginator = new CustomPaginator();
 
         // Act
-        $response = $paginator->paginate(\App\Article::where('id', '>=', 1));
+        $response = $paginator->paginate(\App\Article::query());
 
         // Assert
         $this->assertEquals($boolean, Str::contains($response->url(2), 'items='));
@@ -122,7 +122,7 @@ class CustomPaginatorTest extends TestCase
         $paginator = new CustomPaginator();
 
         // Act
-        $response = $paginator->paginate(\App\Article::where('id', '>=', 1));
+        $response = $paginator->paginate(\App\Article::query());
 
         // Assert
         $this->assertEquals('Illuminate\Database\Eloquent\Collection', get_class($response));
