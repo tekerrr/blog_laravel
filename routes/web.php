@@ -37,4 +37,10 @@ Route::prefix('/admin')->name('admin.')->middleware(['auth'])->group(function ()
 
     Route::resource('pages', 'Admin\PageController');
     Route::patch('pages/{page}/set-active-status', 'Admin\PageController@setActiveStatus')->name('pages.set-active-status');
+
+    Route::resource('users', 'Admin\UserController');
+    Route::patch('users/{user}/set-active-status', 'Admin\UserController@setActiveStatus')->name('users.set-active-status');
+
+    Route::patch('users/{user}/avatar', 'Admin\AvatarController@update')->name('avatar.update');
+    Route::delete('users/{user}/avatar', 'Admin\AvatarController@destroy')->name('avatar.destroy');
 });
