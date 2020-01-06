@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Collection;
@@ -23,6 +24,20 @@ class UserTest extends TestCase
 
         // Assert
         $this->assertEquals($image->path, $user->image->path);
+    }
+
+    /** @test */
+    public function the_class_is_using_can_be_activated_trait_correctly()
+    {
+        // Arrange
+        $elements = factory(User::class, 2)->create(['is_active' => false]);
+
+        // Act
+        $elements->first()->activate();
+
+        // Assert
+        $this->assertTrue($elements->first()->isActive());
+        $this->assertFalse($elements->last()->isActive());
     }
 
     /** @test */
