@@ -34,4 +34,7 @@ Route::prefix('/admin')->name('admin.')->middleware(['auth'])->group(function ()
 
     Route::resource('comments', 'Admin\CommentController');
     Route::patch('comments/{comment}/set-active-status', 'Admin\CommentController@setActiveStatus')->name('comments.set-active-status');
+
+    Route::resource('pages', 'Admin\PageController');
+    Route::patch('pages/{page}/set-active-status', 'Admin\PageController@setActiveStatus')->name('pages.set-active-status');
 });
