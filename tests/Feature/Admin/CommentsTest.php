@@ -28,15 +28,12 @@ class CommentsTest extends TestCase
         $response = $this->get('/admin/comments');
 
         // Assert
-        if ($status->contains('stuff')) {
-            $response
+        $status->contains('stuff')
+            ? $response
                 ->assertViewIs('admin.comments.index')
-                ->assertSeeText('Комментарии');
-        } elseif ($status->contains('auth')) {
-            $response->assertStatus(403);
-        } else {
-            $response->assertRedirect('/login');
-        }
+                ->assertSeeText('Комментарии')
+            : $response
+                ->assertDontSeeText('Комментарии');
     }
 
     /** @test */
@@ -72,11 +69,9 @@ class CommentsTest extends TestCase
         $this->delete('/admin/comments/' . $comment->id);
 
         // Assert
-        if ($status->contains('stuff')) {
-            $this->assertDatabaseMissing(app(Comment::class)->getTable(), ['body' => $comment->body]);
-        } else {
-            $this->assertDatabaseHas(app(Comment::class)->getTable(), ['body' => $comment->body]);
-        }
+        $status->contains('stuff')
+            ? $this->assertDatabaseMissing(app(Comment::class)->getTable(), ['body' => $comment->body])
+            : $this->assertDatabaseHas(app(Comment::class)->getTable(), ['body' => $comment->body]);
     }
 
     /**
@@ -95,12 +90,10 @@ class CommentsTest extends TestCase
         $this->patch('/admin/comments/' . $comment->id . '/set-active-status', ['active' => true]);
 
         // Assert
-        if ($status->contains('stuff')) {
-            $comment->refresh();
-            $this->assertTrue($comment->isActive());
-        } else {
-            $this->assertFalse($comment->isActive());
-        }
+        $comment->refresh();
+        $status->contains('stuff')
+            ? $this->assertTrue($comment->isActive())
+            : $this->assertFalse($comment->isActive());
     }
 
     /**
@@ -119,11 +112,9 @@ class CommentsTest extends TestCase
         $this->patch('/admin/comments/' . $comment->id . '/set-active-status', []);
 
         // Assert
-        if ($status->contains('stuff')) {
-            $comment->refresh();
-            $this->assertFalse($comment->isActive());
-        } else {
-            $this->assertTrue($comment->isActive());
-        }
+        $comment->refresh();
+        $status->contains('stuff')
+            ? $this->assertFalse($comment->isActive())
+            : $this->assertTrue($comment->isActive());
     }
 }

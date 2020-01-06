@@ -71,11 +71,9 @@ class ArticlesTest extends TestCase
         $response = $this->get('articles/' . $article->id);
 
         // Assert
-        if ($status->contains('stuff')) {
-            $response->assertSee(route('admin.articles.show', compact('article')));
-        } else {
-            $response->assertDontSee(route('admin.articles.show', compact('article')));
-        }
+        $status->contains('stuff')
+            ? $response->assertSee(route('admin.articles.show', compact('article')))
+            : $response->assertDontSee(route('admin.articles.show', compact('article')));
     }
 
     /** @test */

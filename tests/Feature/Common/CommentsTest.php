@@ -29,11 +29,9 @@ class CommentsTest extends TestCase
         $response = $this->post('/articles/'. $article->id . '/comments', $attributes);
 
         // Assert
-        if ($status->contains('auth')) {
-            $this->assertDatabaseHas((new \App\Comment())->getTable(), $attributes);
-        } else {
-            $response->assertRedirect('/login');
-        }
+        $status->contains('auth')
+            ? $this->assertDatabaseHas((new \App\Comment())->getTable(), $attributes)
+            : $response->assertRedirect('/login');
     }
 
     /**
@@ -54,10 +52,8 @@ class CommentsTest extends TestCase
         $response = $this->get('/articles/'. $article->id);
 
         // Assert
-        if ($status->contains('stuff')) {
-            $response->assertSeeText($attributes['body']);
-        } else {
-            $response->assertDontSeeText($attributes['body']);
-        }
+        $status->contains('stuff')
+            ? $response->assertSeeText($attributes['body'])
+            : $response->assertDontSeeText($attributes['body']);
     }
 }

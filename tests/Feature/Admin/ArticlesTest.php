@@ -28,15 +28,12 @@ class ArticlesTest extends TestCase
         $response = $this->get('/admin/articles');
 
         // Assert
-        if ($status->contains('stuff')) {
-            $response
+        $status->contains('stuff')
+            ? $response
                 ->assertViewIs('admin.articles.index')
-                ->assertSeeText('Статьи');
-        } elseif ($status->contains('auth')) {
-            $response->assertStatus(403);
-        } else {
-            $response->assertRedirect('/login');
-        }
+                ->assertSeeText('Статьи')
+            : $response
+                ->assertDontSeeText('Статьи');
     }
 
     /** @test */
@@ -72,15 +69,12 @@ class ArticlesTest extends TestCase
         $response = $this->get('/admin/articles/' . $article->id);
 
         // Assert
-        if ($status->contains('stuff')) {
-            $response
+        $status->contains('stuff')
+            ? $response
                 ->assertViewIs('admin.articles.show')
-                ->assertSeeText($article->body);
-        } elseif ($status->contains('auth')) {
-            $response->assertStatus(403);
-        } else {
-            $response->assertRedirect('/login');
-        }
+                ->assertSeeText($article->body)
+            : $response
+                ->assertDontSeeText($article->body);
     }
 
     /** @test */
@@ -134,15 +128,12 @@ class ArticlesTest extends TestCase
         $response = $this->get('/admin/articles/create');
 
         // Assert
-        if ($status->contains('stuff')) {
-            $response
+        $status->contains('stuff')
+            ? $response
                 ->assertViewIs('admin.articles.create')
-                ->assertSeeText('Добавить статью');
-        } elseif ($status->contains('auth')) {
-            $response->assertStatus(403);
-        } else {
-            $response->assertRedirect('/login');
-        }
+                ->assertSeeText('Добавить статью')
+            : $response
+                ->assertDontSeeText('Добавить статью');
     }
 
     /**
@@ -162,12 +153,12 @@ class ArticlesTest extends TestCase
         $this->post('/admin/articles', $attributes);
 
         // Assert
-        if ($status->contains('stuff')) {
-            $this->assertDatabaseHas(app(Article::class)->getTable(), ['body' => $attributes['body']]);
-            $this->image = Article::first()->image->path;
-        } else {
-            $this->assertDatabaseMissing(app(Article::class)->getTable(), ['body' => $attributes['body']]);
-        }
+        $status->contains('stuff')
+            ? $this->assertDatabaseHas(app(Article::class)->getTable(), ['body' => $attributes['body']])
+            : $this->assertDatabaseMissing(app(Article::class)->getTable(), ['body' => $attributes['body']]);
+
+        // Clean
+        $this->image = optional(\App\Image::first())->path;
     }
 
     /**
@@ -186,15 +177,12 @@ class ArticlesTest extends TestCase
         $response = $this->get('/admin/articles/' . $article->id . '/edit');
 
         // Assert
-        if ($status->contains('stuff')) {
-            $response
+        $status->contains('stuff')
+            ? $response
                 ->assertViewIs('admin.articles.edit')
-                ->assertSeeText('Редактировать статью');
-        } elseif ($status->contains('auth')) {
-            $response->assertStatus(403);
-        } else {
-            $response->assertRedirect('/login');
-        }
+                ->assertSeeText('Редактировать статью')
+            : $response
+                ->assertDontSeeText('Редактировать статью');
     }
 
     /** @test */
@@ -233,11 +221,9 @@ class ArticlesTest extends TestCase
         $this->patch('/admin/articles/' . $article->id, $attributes);
 
         // Assert
-        if ($status->contains('stuff')) {
-            $this->assertDatabaseHas(app(Article::class)->getTable(), $attributes);
-        } else {
-            $this->assertDatabaseMissing(app(Article::class)->getTable(), $attributes);
-        }
+        $status->contains('stuff')
+            ? $this->assertDatabaseHas(app(Article::class)->getTable(), $attributes)
+            : $this->assertDatabaseMissing(app(Article::class)->getTable(), $attributes);
     }
 
     /** @test */
@@ -272,11 +258,9 @@ class ArticlesTest extends TestCase
         $this->delete('/admin/articles/' . $article->id);
 
         // Assert
-        if ($status->contains('stuff')) {
-            $this->assertDatabaseMissing(app(Article::class)->getTable(), ['body' => $article->body]);
-        } else {
-            $this->assertDatabaseHas(app(Article::class)->getTable(), ['body' => $article->body]);
-        }
+        $status->contains('stuff')
+            ? $this->assertDatabaseMissing(app(Article::class)->getTable(), ['body' => $article->body])
+            : $this->assertDatabaseHas(app(Article::class)->getTable(), ['body' => $article->body]);
     }
 
     /**
@@ -295,12 +279,10 @@ class ArticlesTest extends TestCase
         $this->patch('/admin/articles/' . $article->id . '/set-active-status', ['active' => true]);
 
         // Assert
-        if ($status->contains('stuff')) {
-            $article->refresh();
-            $this->assertTrue($article->isActive());
-        } else {
-            $this->assertFalse($article->isActive());
-        }
+        $article->refresh();
+        $status->contains('stuff')
+            ? $this->assertTrue($article->isActive())
+            : $this->assertFalse($article->isActive());
     }
 
     /**
@@ -319,11 +301,9 @@ class ArticlesTest extends TestCase
         $this->patch('/admin/articles/' . $article->id . '/set-active-status', []);
 
         // Assert
-        if ($status->contains('stuff')) {
-            $article->refresh();
-            $this->assertFalse($article->isActive());
-        } else {
-            $this->assertTrue($article->isActive());
-        }
+        $article->refresh();
+        $status->contains('stuff')
+            ? $this->assertFalse($article->isActive())
+            : $this->assertTrue($article->isActive());
     }
 }

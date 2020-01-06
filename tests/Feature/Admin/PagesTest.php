@@ -28,15 +28,12 @@ class PagesTest extends TestCase
         $response = $this->get('/admin/pages');
 
         // Assert
-        if ($status->contains('stuff')) {
-            $response
+        $status->contains('stuff')
+            ? $response
                 ->assertViewIs('admin.pages.index')
-                ->assertSeeText('Статичные страницы');
-        } elseif ($status->contains('auth')) {
-            $response->assertStatus(403);
-        } else {
-            $response->assertRedirect('/login');
-        }
+                ->assertSeeText('Статичные страницы')
+            : $response
+                ->assertDontSeeText('Статичные страницы');
     }
 
     /** @test */
@@ -72,15 +69,12 @@ class PagesTest extends TestCase
         $response = $this->get('/admin/pages/' . $page->id);
 
         // Assert
-        if ($status->contains('stuff')) {
-            $response
+        $status->contains('stuff')
+            ? $response
                 ->assertViewIs('admin.pages.show')
-                ->assertSeeText($page->body);
-        } elseif ($status->contains('auth')) {
-            $response->assertStatus(403);
-        } else {
-            $response->assertRedirect('/login');
-        }
+                ->assertSeeText($page->body)
+            : $response
+                ->assertDontSeeText($page->body);
     }
 
     /** @test */
@@ -114,15 +108,12 @@ class PagesTest extends TestCase
         $response = $this->get('/admin/pages/create');
 
         // Assert
-        if ($status->contains('stuff')) {
-            $response
+        $status->contains('stuff')
+            ? $response
                 ->assertViewIs('admin.pages.create')
-                ->assertSeeText('Добавить статичную страницу');
-        } elseif ($status->contains('auth')) {
-            $response->assertStatus(403);
-        } else {
-            $response->assertRedirect('/login');
-        }
+                ->assertSeeText('Добавить статичную страницу')
+            : $response
+                ->assertDontSeeText('Добавить статичную страницу');
     }
 
     /**
@@ -141,11 +132,9 @@ class PagesTest extends TestCase
         $this->post('/admin/pages', $attributes);
 
         // Assert
-        if ($status->contains('stuff')) {
-            $this->assertDatabaseHas(app(Page::class)->getTable(), ['body' => $attributes['body']]);
-        } else {
-            $this->assertDatabaseMissing(app(Page::class)->getTable(), ['body' => $attributes['body']]);
-        }
+        $status->contains('stuff')
+            ? $this->assertDatabaseHas(app(Page::class)->getTable(), ['body' => $attributes['body']])
+            : $this->assertDatabaseMissing(app(Page::class)->getTable(), ['body' => $attributes['body']]);
     }
 
     /**
@@ -164,15 +153,12 @@ class PagesTest extends TestCase
         $response = $this->get('/admin/pages/' . $page->id . '/edit');
 
         // Assert
-        if ($status->contains('stuff')) {
-            $response
+        $status->contains('stuff')
+            ? $response
                 ->assertViewIs('admin.pages.edit')
-                ->assertSeeText('Редактировать статичную страницу');
-        } elseif ($status->contains('auth')) {
-            $response->assertStatus(403);
-        } else {
-            $response->assertRedirect('/login');
-        }
+                ->assertSeeText('Редактировать статичную страницу')
+            : $response
+                ->assertDontSeeText('Редактировать статичную страницу');
     }
 
     /** @test */
@@ -209,11 +195,9 @@ class PagesTest extends TestCase
         $this->patch('/admin/pages/' . $page->id, $attributes);
 
         // Assert
-        if ($status->contains('stuff')) {
-            $this->assertDatabaseHas(app(Page::class)->getTable(), $attributes);
-        } else {
-            $this->assertDatabaseMissing(app(Page::class)->getTable(), $attributes);
-        }
+        $status->contains('stuff')
+            ? $this->assertDatabaseHas(app(Page::class)->getTable(), $attributes)
+            : $this->assertDatabaseMissing(app(Page::class)->getTable(), $attributes);
     }
 
     /**
@@ -232,11 +216,9 @@ class PagesTest extends TestCase
         $this->delete('/admin/pages/' . $page->id);
 
         // Assert
-        if ($status->contains('stuff')) {
-            $this->assertDatabaseMissing(app(Page::class)->getTable(), ['body' => $page->body]);
-        } else {
-            $this->assertDatabaseHas(app(Page::class)->getTable(), ['body' => $page->body]);
-        }
+        $status->contains('stuff')
+            ? $this->assertDatabaseMissing(app(Page::class)->getTable(), ['body' => $page->body])
+            : $this->assertDatabaseHas(app(Page::class)->getTable(), ['body' => $page->body]);
     }
 
     /**
@@ -255,12 +237,10 @@ class PagesTest extends TestCase
         $this->patch('/admin/pages/' . $page->id . '/set-active-status', ['active' => true]);
 
         // Assert
-        if ($status->contains('stuff')) {
-            $page->refresh();
-            $this->assertTrue($page->isActive());
-        } else {
-            $this->assertFalse($page->isActive());
-        }
+        $page->refresh();
+        $status->contains('stuff')
+            ? $this->assertTrue($page->isActive())
+            : $this->assertFalse($page->isActive());
     }
 
     /**
@@ -279,11 +259,9 @@ class PagesTest extends TestCase
         $this->patch('/admin/pages/' . $page->id . '/set-active-status', []);
 
         // Assert
-        if ($status->contains('stuff')) {
-            $page->refresh();
-            $this->assertFalse($page->isActive());
-        } else {
-            $this->assertTrue($page->isActive());
-        }
+        $page->refresh();
+        $status->contains('stuff')
+            ? $this->assertFalse($page->isActive())
+            : $this->assertTrue($page->isActive());
     }
 }
