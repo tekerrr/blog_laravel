@@ -21,7 +21,6 @@ class User extends Authenticatable
         });
     }
 
-
     public function roles()
     {
         return $this->belongsToMany(Role::class);
@@ -30,6 +29,13 @@ class User extends Authenticatable
     public function subscription()
     {
         return $this->hasOne(Subscriber::class, 'email', 'email');
+    }
+
+    public function getRoles(bool $asText = false)
+    {
+        $roles = $this->roles()->pluck('role');
+
+        return $asText ? $roles->implode(', ') : $roles;
     }
 
     public function hasRole(string $role): bool

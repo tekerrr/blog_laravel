@@ -25,7 +25,6 @@ class AccountController extends Controller
         auth()->user()->update($attributes);
 
         flash('Данные аккаунта успешно обновлены.');
-
         return back();
     }
 }
