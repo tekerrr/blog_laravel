@@ -17,6 +17,7 @@
             <ul class="navbar-nav">
                 @include('layout.navbar.items.item', ['name' => 'Статьи', 'path' => route('admin.articles.index'), 'active' => is_current_route('admin.articles.index')])
                 @include('layout.navbar.items.item', ['name' => 'Комментарии', 'path' => route('admin.comments.index'), 'active' => is_current_route('admin.comments.index')])
+                @include('layout.navbar.items.item', ['name' => 'Страницы', 'path' => route('admin.pages.index'), 'active' => is_current_route('admin.pages.index')])
 
                 @include('layout.navbar.items.auth-button-admin')
             </ul>

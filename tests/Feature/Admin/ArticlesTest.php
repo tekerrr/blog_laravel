@@ -197,6 +197,24 @@ class ArticlesTest extends TestCase
         }
     }
 
+    /** @test */
+    public function the_article_editing_page_shows_article_attributes()
+    {
+        // Arrange
+        $this->actingAsRole('author');
+        $article = factory(Article::class)->create();
+
+        // Act
+        $response = $this->get('/admin/articles/' . $article->id . '/edit');
+
+        // Assert
+        $response
+            ->assertSee($article->title)
+            ->assertSee($article->abstract)
+            ->assertSee($article->getImageUrl())
+            ->assertSee($article->body);
+    }
+
     /**
      * @test
      * @dataProvider visitorProvider
@@ -211,7 +229,7 @@ class ArticlesTest extends TestCase
         $article = Article::create($attributes);
 
         // Act
-        $attributes['title'] = 'test test';
+        $attributes['title'] = $this->faker->words(4, true);
         $this->patch('/admin/articles/' . $article->id, $attributes);
 
         // Assert

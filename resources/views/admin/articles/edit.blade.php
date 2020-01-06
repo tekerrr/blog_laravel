@@ -23,11 +23,7 @@
             </div>
 
             @include('layout.input.file', ['name' => 'image', 'label' => 'Для изменеия загрузите новый файл::', 'divClass' => 'mb-3'])
-
-            <div class="row form-group mx-0">
-                <input type="submit" class="btn btn-primary btn-md rounded-0" value="Изменить">
-                <a class="btn btn-outline-primary rounded-0 ml-3" href="{{ url()->previous() }}">Отмена</a>
-            </div>
+            @include('layout.input.confirm', ['buttonText' => 'Изменить'])
 
         </form>
     </div>

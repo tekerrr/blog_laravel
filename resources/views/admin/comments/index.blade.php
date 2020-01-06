@@ -18,7 +18,7 @@
     @forelse ($comments as $comment)
         @include('admin.comments.item')
     @empty
-        <div class="container pt-4">Нет статей</div>
+        <div class="container pt-4">Нет комментариев</div>
     @endforelse
 
    @includeWhen($paginator->isNeed(), 'pagination.links', ['items' => $comments])
