@@ -73,5 +73,17 @@
 
         </div>
 
+        @foreach($roles as $role)
+            <div class="row py-3 border-bottom ml-0 align-items-start w-50">
+                <div class="col-4"><b>{{ $role->role }}</b></div>
+                <form method="post" action="{{ route('admin.users.roles.' . ($role->isActive ? 'remove' : 'add'), compact('user', 'role')) }}">
+                    @csrf
+                    @method('PATCH')
+                    <text class ="text-{{ $role->isActive ? 'success' : 'danger' }}">{{ $role->isActive ? 'Состоит' : 'Не состоит' }}</text>
+                    <input type="submit" class="btn btn-outline-primary rounded-0 btn-sm  ml-1" value="Сменить">
+                </form>
+            </div>
+        @endforeach
+
     </div>
 @endsection

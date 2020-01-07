@@ -85,7 +85,21 @@ class UserTest extends TestCase
     }
 
     /** @test */
-    public function a_role_can_be_added_to_a_user()
+    public function a_role_can_be_added_to_the_user()
+    {
+        // Arrange
+        $user = $this->createUser();
+        $role = factory(\App\Role::class)->create();
+
+        // Act
+        $user->addRole($role);
+
+        // Assert
+        $this->assertEquals($role->role, $user->roles->first()->role);
+    }
+
+    /** @test */
+    public function a_role_as_string_can_be_added_to_the_user()
     {
         // Arrange
         $user = $this->createUser();
@@ -95,6 +109,34 @@ class UserTest extends TestCase
 
         // Assert
         $this->assertEquals($role, $user->roles->first()->role);
+    }
+
+    /** @test */
+    public function a_role_can_be_removed_from_the_user()
+    {
+        // Arrange
+        $user = $this->createUser()->addRole($this->faker->word);
+
+        // Act
+        $user->removeRole($user->roles->first());
+
+        // Assert
+        $user->refresh();
+        $this->assertNull($user->roles->first());
+    }
+
+    /** @test */
+    public function a_role_as_string_can_be_removed_from_the_user()
+    {
+        // Arrange
+        $user = $this->createUser()->addRole($role = $this->faker->word);
+
+        // Act
+        $user->removeRole($role);
+
+        // Assert
+        $user->refresh();
+        $this->assertNull($user->roles->first());
     }
 
     /**

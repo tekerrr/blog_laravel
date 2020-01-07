@@ -43,4 +43,7 @@ Route::prefix('/admin')->name('admin.')->middleware(['auth'])->group(function ()
 
     Route::patch('users/{user}/avatar', 'Admin\AvatarController@update')->name('avatar.update');
     Route::delete('users/{user}/avatar', 'Admin\AvatarController@destroy')->name('avatar.destroy');
+
+    Route::patch('users/{user}/roles/{role}/add', 'Admin\RoleController@add')->name('users.roles.add');
+    Route::patch('users/{user}/roles/{role}/remove', 'Admin\RoleController@remove')->name('users.roles.remove');
 });

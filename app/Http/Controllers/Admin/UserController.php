@@ -23,7 +23,14 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        return view('admin.users.edit', compact('user'));
+        $userRoles = $user->getRoles();
+
+        $roles = \App\Role::all()->map(function ($role) use ($userRoles) {
+            $role->isActive = in_array($role->role, $userRoles);
+            return $role;
+        });
+
+        return view('admin.users.edit', compact('user', 'roles'));
     }
 
     public function update(UpdateUser $request, User $user)

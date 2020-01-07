@@ -35,7 +35,7 @@ class User extends Authenticatable
     {
         $roles = $this->roles()->pluck('role');
 
-        return $asText ? $roles->implode(', ') : $roles;
+        return $asText ? $roles->implode(', ') : $roles->toArray();
     }
 
     public function hasRole(string $role): bool
@@ -48,9 +48,26 @@ class User extends Authenticatable
         return $this->roles()->whereIn('role', $roles)->exists();
     }
 
-    public function addRole(string $role): User
+    /**
+     * @param Role|string $role
+     * @return User
+     */
+    public function addRole($role): User
     {
-        $this->roles()->attach(\App\Role::firstOrCreate(['role' => $role]));
+        $this->roles()->attach($role instanceof \App\Role ? $role->id : \App\Role::firstOrCreate(['role' => $role])->id);
+
+        return $this;
+    }
+
+    /**
+     * @param Role|string $role
+     * @return User
+     */
+    public function removeRole($role): User
+    {
+        if ($role instanceof \App\Role || ($role = \App\Role::first('name', $role)) instanceof \App\Role) {
+            $this->roles()->detach($role->id);
+        }
 
         return $this;
     }
