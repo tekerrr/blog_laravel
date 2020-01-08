@@ -90,7 +90,7 @@ class ArticleController extends Controller
     {
         $article->activate();
 
-        flash('Статья опубликована');
+        flash('Статья опубликована. Задача "Рассылка всем подписчикам" добавлена в очередь');
         return back();
     }
 

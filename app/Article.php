@@ -10,6 +10,17 @@ class Article extends Model
 
     protected $fillable = ['title', 'abstract', 'body', 'is_active'];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::updating(function (Article $article) {
+            if (! empty($article->getDirty()['is_active'])) {
+                event(new \App\Events\ArticlePublished($article));
+            }
+        });
+    }
+
     public function getCreatedAtAttribute($value)
     {
         return (new Service\Formatter\RusDate())->format($value);

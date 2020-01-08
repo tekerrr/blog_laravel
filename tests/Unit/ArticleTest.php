@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Article;
+use App\Events\ArticlePublished;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -69,5 +70,47 @@ class ArticleTest extends TestCase
 
         // Assert
         $this->assertEquals($next->body, $response->body);
+    }
+
+    /** @test */
+    public function article_activation_creates_the_article_publish_event()
+    {
+        // Arrange
+        \Event::fake([ArticlePublished::class]);
+        $article = factory(Article::class)->create(['is_active' => false]);
+
+        // Act
+        $article->activate();
+
+        // Assert
+        \Event::assertDispatched(ArticlePublished::class);
+    }
+
+    /** @test */
+    public function article_deactivation_does_not_create_the_article_publish_event()
+    {
+        // Arrange
+        \Event::fake([ArticlePublished::class]);
+        $article = factory(Article::class)->create(['is_active' => true]);
+
+        // Act
+        $article->deactivate();
+
+        // Assert
+        \Event::assertNotDispatched(ArticlePublished::class);
+    }
+
+    /** @test */
+    public function article_updating_does_not_create_the_article_publish_event()
+    {
+        // Arrange
+        \Event::fake([ArticlePublished::class]);
+        $article = factory(Article::class)->create(['is_active' => true]);
+
+        // Act
+        $article->update(['title' => $this->faker->words(4, true)]);
+
+        // Assert
+        \Event::assertNotDispatched(ArticlePublished::class);
     }
 }
