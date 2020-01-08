@@ -14,7 +14,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         \View::composer('layout.navbar.public', function ($view) {
-            $view->with('articles', \App\Article::active()->latest()->take(5)->get());
+            $view->with('articles', \App\Article::active()->latest()->take(config('content.navbar.articles'))->get());
             $view->with('pages', \App\Page::active()->get());
         });
     }
@@ -26,6 +26,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        if (! app()->environment('testing')) {
+            foreach (\App\Settings::all() as $settings) {
+                config([$settings->name => $settings->value]);
+            }
+        }
     }
 }

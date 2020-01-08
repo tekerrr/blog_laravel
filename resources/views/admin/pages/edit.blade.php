@@ -5,7 +5,7 @@
 @section('body')
 
     <div class="container">
-        <form class="form pt-4" enctype="multipart/form-data" action="{{ route('admin.pages.store') }}" method="POST">
+        <form class="form pt-4" enctype="multipart/form-data" action="{{ route('admin.pages.update', compact('page')) }}" method="POST">
 
             @csrf
             @method('PATCH')

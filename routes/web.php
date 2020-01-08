@@ -48,4 +48,7 @@ Route::prefix('/admin')->name('admin.')->middleware(['auth'])->group(function ()
     Route::patch('users/{user}/roles/{role}/remove', 'Admin\RoleController@remove')->name('users.roles.remove');
 
     Route::resource('subscribers', 'Admin\SubscriberController')->only('index', 'destroy');
+
+    Route::get('settings', 'Admin\SettingsController@edit')->name('settings.edit');
+    Route::patch('settings', 'Admin\SettingsController@update')->name('settings.update');
 });

@@ -19,7 +19,9 @@
                 @include('layout.navbar.items.item', ['name' => 'Комментарии', 'path' => route('admin.comments.index'), 'active' => is_current_route('admin.comments.index')])
                 @include('layout.navbar.items.item', ['name' => 'Страницы', 'path' => route('admin.pages.index'), 'active' => is_current_route('admin.pages.index')])
 
-                @includeWhen(auth()->user()->isAdmin(), 'layout.navbar.items.dropdown-users', ['active' => (is_current_route('admin.articles.show') || is_current_route('admin.articles.show'))])
+                @includeWhen(auth()->user()->isAdmin(), 'layout.navbar.items.dropdown-users', ['active' => (is_current_route('admin.users.index') || is_current_route('admin.subscribers.index'))])
+
+                @includeWhen(auth()->user()->isAdmin(), 'layout.navbar.items.item', ['name' => 'Настройки', 'path' => route('admin.settings.edit'), 'active' => is_current_route('admin.settings.edit')])
 
                 @include('layout.navbar.items.auth-button-admin')
             </ul>

@@ -1,6 +1,9 @@
 <?php
 
 return [
+
+    // Can be overridden via Settings DB table
+
     'avatar' => [
         'max_size' => 2 * 1024, // Кб
     ],
@@ -13,6 +16,10 @@ return [
 
     'paginator' => [
         'items' => 10,
+    ],
+
+    'navbar' => [
+        'articles' => 4,
     ],
 
     'custom_paginator' => [

@@ -140,5 +140,7 @@ return [
         'avatar'                => 'Аватар',
         'title'                 => 'Заголовок',
         'image'                 => 'Изображение',
+        'paginator_items'       => ' ',
+        'navbar_articles'       => ' ',
     ],
 ];
