@@ -32,13 +32,13 @@ Route::prefix('/admin')->name('admin.')->middleware(['auth'])->group(function ()
     Route::resource('articles', 'Admin\ArticleController');
     Route::patch('articles/{article}/set-active-status', 'Admin\ArticleController@setActiveStatus')->name('articles.set-active-status');
 
-    Route::resource('comments', 'Admin\CommentController');
+    Route::resource('comments', 'Admin\CommentController')->only('index', 'destroy');
     Route::patch('comments/{comment}/set-active-status', 'Admin\CommentController@setActiveStatus')->name('comments.set-active-status');
 
     Route::resource('pages', 'Admin\PageController');
     Route::patch('pages/{page}/set-active-status', 'Admin\PageController@setActiveStatus')->name('pages.set-active-status');
 
-    Route::resource('users', 'Admin\UserController');
+    Route::resource('users', 'Admin\UserController')->except('create', 'store', 'show');
     Route::patch('users/{user}/set-active-status', 'Admin\UserController@setActiveStatus')->name('users.set-active-status');
 
     Route::patch('users/{user}/avatar', 'Admin\AvatarController@update')->name('avatar.update');
@@ -46,4 +46,6 @@ Route::prefix('/admin')->name('admin.')->middleware(['auth'])->group(function ()
 
     Route::patch('users/{user}/roles/{role}/add', 'Admin\RoleController@add')->name('users.roles.add');
     Route::patch('users/{user}/roles/{role}/remove', 'Admin\RoleController@remove')->name('users.roles.remove');
+
+    Route::resource('subscribers', 'Admin\SubscriberController')->only('index', 'destroy');
 });
