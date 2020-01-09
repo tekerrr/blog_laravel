@@ -3,52 +3,83 @@
 // Base redirects
 Route::redirect('/', '/articles');
 
-// User paths
+// Auth
 Auth::routes(['reset' => false, 'confirm' => false, 'verify' => false]);
-Route::get('/account', 'AccountController@edit')->name('account.edit');
-Route::patch('/account', 'AccountController@update')->name('account.update');
 
-Route::get('/password', 'Auth\PasswordController@edit')->name('password.edit');
-Route::patch('/password', 'Auth\PasswordController@update')->name('password.update');
-
-Route::patch('/avatar', 'AvatarController@update')->name('avatar.update');
-Route::delete('/avatar', 'AvatarController@destroy')->name('avatar.destroy');
-
-// Subscribe paths
+// Subscription
 Route::post('/subscribe', 'SubscriberController@subscribe')->name('subscribe');
-Route::post('/unsubscribe', 'SubscriberController@unsubscribe')->name('unsubscribe');
 Route::get('/unsubscribe/{subscriber}', 'SubscriberController@unsubscribeByLink')->name('unsubscribe.link');
 
-// Content paths
+// Content
 Route::resource('articles', 'ArticleController')->only('index', 'show');
-Route::post('/articles/{article}/comments', 'CommentController@store')->name('comments.store');
 Route::resource('pages', 'PageController')->only('show');
 
 // Input Elements
 Route::patch('/per-page', 'CustomPaginatorController@perPage')->name('custom-controller.per-page');
 
-// Admin (stuff) paths
-Route::prefix('/admin')->name('admin.')->middleware(['auth'])->group(function () {
-    Route::resource('articles', 'Admin\ArticleController');
-    Route::patch('articles/{article}/set-active-status', 'Admin\ArticleController@setActiveStatus')->name('articles.set-active-status');
+// User paths
+Route::middleware('auth')
+    ->group(function () {
+        // Account
+        Route::get('/account', 'AccountController@edit')->name('account.edit');
+        Route::patch('/account', 'AccountController@update')->name('account.update');
 
-    Route::resource('comments', 'Admin\CommentController')->only('index', 'destroy');
-    Route::patch('comments/{comment}/set-active-status', 'Admin\CommentController@setActiveStatus')->name('comments.set-active-status');
+        // Password
+        Route::get('/password', 'Auth\PasswordController@edit')->name('password.edit');
+        Route::patch('/password', 'Auth\PasswordController@update')->name('password.update');
 
-    Route::resource('pages', 'Admin\PageController');
-    Route::patch('pages/{page}/set-active-status', 'Admin\PageController@setActiveStatus')->name('pages.set-active-status');
+        // Avatar
+        Route::patch('/avatar', 'AvatarController@update')->name('avatar.update');
+        Route::delete('/avatar', 'AvatarController@destroy')->name('avatar.destroy');
 
-    Route::resource('users', 'Admin\UserController')->except('create', 'store', 'show');
-    Route::patch('users/{user}/set-active-status', 'Admin\UserController@setActiveStatus')->name('users.set-active-status');
+        // Subscription
+        Route::post('/unsubscribe', 'SubscriberController@unsubscribe')->name('unsubscribe');
 
-    Route::patch('users/{user}/avatar', 'Admin\AvatarController@update')->name('avatar.update');
-    Route::delete('users/{user}/avatar', 'Admin\AvatarController@destroy')->name('avatar.destroy');
+        // Comment
+        Route::post('/articles/{article}/comments', 'CommentController@store')->name('comments.store');
+    });
 
-    Route::patch('users/{user}/roles/{role}/add', 'Admin\RoleController@add')->name('users.roles.add');
-    Route::patch('users/{user}/roles/{role}/remove', 'Admin\RoleController@remove')->name('users.roles.remove');
+// Author paths
+Route::prefix('/admin')
+    ->namespace('Admin')
+    ->name('admin.')
+    ->middleware(['auth', 'role:author'])
+    ->group(function () {
+        // Articles
+        Route::resource('articles', 'ArticleController');
+        Route::patch('/articles/{article}/set-active-status', 'ArticleController@setActiveStatus')->name('articles.set-active-status');
 
-    Route::resource('subscribers', 'Admin\SubscriberController')->only('index', 'destroy');
+        // Comments
+        Route::resource('comments', 'CommentController')->only('index', 'destroy');
+        Route::patch('/comments/{comment}/set-active-status', 'CommentController@setActiveStatus')->name('comments.set-active-status');
 
-    Route::get('settings', 'Admin\SettingsController@edit')->name('settings.edit');
-    Route::patch('settings', 'Admin\SettingsController@update')->name('settings.update');
-});
+        // Static pages
+        Route::resource('pages', 'PageController');
+        Route::patch('/pages/{page}/set-active-status', 'PageController@setActiveStatus')->name('pages.set-active-status');
+    });
+
+// Admin paths
+Route::prefix('/admin')
+    ->namespace('Admin')
+    ->name('admin.')
+    ->middleware(['auth', 'role:admin'])
+    ->group(function () {
+        // Users
+        Route::resource('users', 'UserController')->except('create', 'store', 'show');
+        Route::patch('/users/{user}/set-active-status', 'UserController@setActiveStatus')->name('users.set-active-status');
+
+        // User's avatars
+        Route::patch('/users/{user}/avatar', 'AvatarController@update')->name('avatar.update');
+        Route::delete('/users/{user}/avatar', 'AvatarController@destroy')->name('avatar.destroy');
+
+        // User's roles
+        Route::patch('/users/{user}/roles/{role}/add', 'RoleController@add')->name('users.roles.add');
+        Route::patch('/users/{user}/roles/{role}/remove', 'RoleController@remove')->name('users.roles.remove');
+
+        // Subscribers
+        Route::resource('subscribers', 'SubscriberController')->only('index', 'destroy');
+
+        // Site settings
+        Route::get('/settings', 'SettingsController@edit')->name('settings.edit');
+        Route::patch('/settings', 'SettingsController@update')->name('settings.update');
+    });

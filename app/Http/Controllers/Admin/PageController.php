@@ -10,11 +10,6 @@ use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('role:author');
-    }
-
     public function index(CustomPaginator $paginator)
     {
         $pages = $paginator->paginate(Page::latest());

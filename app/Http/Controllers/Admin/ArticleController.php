@@ -10,11 +10,6 @@ use App\Service\CustomPaginator;
 
 class ArticleController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('role:author');
-    }
-
     public function index(CustomPaginator $paginator)
     {
         $articles = $paginator->paginate(Article::latest());

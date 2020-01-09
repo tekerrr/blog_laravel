@@ -9,11 +9,6 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('role:author');
-    }
-
     public function index(CustomPaginator $paginator)
     {
         $comments = $paginator->paginate(Comment::with('article')->latest());

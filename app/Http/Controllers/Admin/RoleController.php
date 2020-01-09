@@ -8,11 +8,6 @@ use App\Role;
 
 class RoleController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('role:admin');
-    }
-
     public function add(User $user, Role $role)
     {
         $user->addRole($role);

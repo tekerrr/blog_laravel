@@ -7,14 +7,9 @@ use Illuminate\Http\Request;
 
 class SubscriberController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth')->only('destroy');
-    }
-
     public function subscribe()
     {
-        if (auth()->check()) {
+        if (auth()->check() && ! auth()->user()->subscription) {
             auth()->user()->subscription()->create();
         } else {
             $attributes = request()->validate(['email' => ['required', 'string', 'email', 'max:255']]);

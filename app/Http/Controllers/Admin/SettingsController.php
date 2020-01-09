@@ -8,11 +8,6 @@ use App\Config;
 
 class SettingsController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('role:admin');
-    }
-
     public function edit()
     {
         $settings = config('content');

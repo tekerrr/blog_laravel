@@ -9,11 +9,6 @@ use App\User;
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('role:admin');
-    }
-
     public function index(CustomPaginator $paginator)
     {
         $users = $paginator->paginate(User::query());
