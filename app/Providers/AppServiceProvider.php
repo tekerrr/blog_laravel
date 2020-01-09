@@ -26,10 +26,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (! app()->environment('testing')) {
-            foreach (\App\Settings::all() as $settings) {
-                config([$settings->name => $settings->value]);
-            }
-        }
+        \App\Config::loadConfig();
     }
 }

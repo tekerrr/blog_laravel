@@ -3,9 +3,9 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 use Faker\Generator as Faker;
 
-$factory->define(\App\Settings::class, function (Faker $faker) {
+$factory->define(\App\Config::class, function (Faker $faker) {
     return [
-        'name' => $faker->word,
+        'key' => $faker->word,
         'value' => $faker->word,
     ];
 });

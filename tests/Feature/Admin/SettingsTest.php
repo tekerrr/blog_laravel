@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Admin;
 
-use App\Settings;
+use App\Config;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Collection;
@@ -58,10 +58,10 @@ class SettingsTest extends TestCase
         // Assert
         $status->contains('admin')
             ? $this
-                ->assertDatabaseHas(app(Settings::class)->getTable(),
-                    ['name' => 'content.paginator.items' , 'value' => $attributes['paginator_items']])
+                ->assertDatabaseHas(app(Config::class)->getTable(),
+                    ['key' => 'content.paginator.items' , 'value' => $attributes['paginator_items']])
             : $this
-                ->assertDatabaseMissing(app(Settings::class)->getTable(),
-                    ['name' => 'content.paginator.items' , 'value' => $attributes['paginator_items']]);
+                ->assertDatabaseMissing(app(Config::class)->getTable(),
+                    ['key' => 'content.paginator.items' , 'value' => $attributes['paginator_items']]);
     }
 }

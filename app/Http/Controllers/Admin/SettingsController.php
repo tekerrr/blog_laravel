@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateSettings;
-use App\Settings;
+use App\Config;
 
 class SettingsController extends Controller
 {
@@ -22,9 +22,9 @@ class SettingsController extends Controller
 
     public function update(UpdateSettings $request)
     {
-        Settings::setContent('paginator.items', $request->get('paginator_items'));
-        Settings::setContent('navbar.articles', $request->get('navbar_articles'));
-        Settings::setContent('custom_paginator.items', $request->get('custom_paginator_items'));
+        Config::setContent('paginator.items', $request->get('paginator_items'));
+        Config::setContent('navbar.articles', $request->get('navbar_articles'));
+        Config::setContent('custom_paginator.items', $request->get('custom_paginator_items'));
 
         flash('Настройки сохранены.');
         return back();
