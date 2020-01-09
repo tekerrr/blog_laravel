@@ -1,2 +1,6 @@
 *
 !.gitignore
+!avatars/
+!avatars/.gitkeep
+!articles/
+!articles/.gitkeep

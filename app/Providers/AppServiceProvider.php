@@ -13,7 +13,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        \View::composer('layout.navbar.public', function ($view) {
+            $view->with('articles', \App\Article::active()->latest()->take(config('content.navbar.articles'))->get());
+            $view->with('pages', \App\Page::active()->get());
+        });
     }
 
     /**
@@ -23,6 +26,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        \App\Config::loadConfig();
     }
 }
