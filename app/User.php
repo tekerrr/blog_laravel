@@ -16,6 +16,12 @@ class User extends Authenticatable
     {
         parent::boot();
 
+        static::updated(function (User $user) {
+            if (! empty($user->isDirty('email')) && ($sub = Subscriber::where('email', $user->getOriginal('email'))->first())) {
+                $sub->update(['email' => $user->email]);
+            }
+        });
+
         static::deleting(function (User $user) {
             $user->subscription()->delete();
         });

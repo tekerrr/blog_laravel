@@ -71,6 +71,23 @@ class UserTest extends TestCase
     }
 
     /** @test */
+    public function a_subscription_is_updated_when_the_user_is_updated()
+    {
+        // Arrange
+        $user = $this->createUser();
+        $user->subscription()->create();
+        $oldEmail = $user->email;
+        $newEmail = $this->faker->email;
+
+        // Act
+        $user->update(['email' => $newEmail]);
+
+        // Assert
+        $this->assertDatabaseMissing((new \App\Subscriber())->getTable(), ['email' => $oldEmail]);
+        $this->assertDatabaseHas((new \App\Subscriber())->getTable(), ['email' => $newEmail]);
+    }
+
+    /** @test */
     public function a_subscription_is_deleted_when_the_user_is_deleted()
     {
         // Arrange

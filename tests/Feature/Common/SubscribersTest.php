@@ -11,21 +11,15 @@ class SubscribersTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
-    /** @test */
-    public function a_guest_can_view_the_subscribe_button_on_the_article_list_page()
-    {
-        // Act
-        $response = $this->get('/articles');
-
-        // Assert
-        $response->assertSee('Подписаться на рассылку');
-    }
-
-    /** @test */
-    public function a_unsubscribed_user_can_view_the_subscribe_button_on_the_article_list_page()
+    /**
+     * @test
+     * @dataProvider baseVisitorProvider
+     * @param $role
+     */
+    public function all_unsubscribed_visitors_can_view_the_subscribe_button_on_the_article_list_page($role)
     {
         // Arrange
-        $this->actingAsUser();
+        $this->actingAsRole($role);
 
         // Act
         $response = $this->get('/articles');
@@ -49,19 +43,6 @@ class SubscribersTest extends TestCase
     }
 
     /** @test */
-    public function a_unsubscribed_user_can_view_the_subscribe_button_on_his_account_page()
-    {
-        // Arrange
-        $this->actingAsUser();
-
-        // Act
-        $response = $this->get('/account');
-
-        // Assert
-        $response->assertSee('Оформить');
-    }
-
-    /** @test */
     public function a_subscribed_user_can_view_the_unsubscribe_button_on_his_account_page()
     {
         // Arrange
@@ -76,10 +57,28 @@ class SubscribersTest extends TestCase
     }
 
     /** @test */
-    public function a_guest_can_subscribe()
+    public function a_unsubscribed_user_can_view_the_subscribe_button_on_his_account_page()
     {
         // Arrange
-        $attributes = ['email' => $this->faker->email];
+        $this->actingAsUser();
+
+        // Act
+        $response = $this->get('/account');
+
+        // Assert
+        $response->assertSee('Оформить');
+    }
+
+    /**
+     * @test
+     * @dataProvider baseVisitorProvider
+     * @param $role
+     */
+    public function all_unsubscribed_visitors_can_subscribe($role)
+    {
+        // Arrange
+        $this->actingAsRole($role);
+        $attributes = ['email' => optional(auth()->user())->email ?? $this->faker->email];
 
         // Act
         $this->post('/subscribe', $attributes);
@@ -89,16 +88,31 @@ class SubscribersTest extends TestCase
     }
 
     /** @test */
-    public function a_unsubscribed_user_can_subscribe()
+    public function a_subscribed_user_can_subscribe()
     {
         // Arrange
         $user = $this->actingAsUser();
+        $user->subscription()->create();
 
         // Act
         $this->post('/subscribe');
 
         // Assert
         $this->assertTrue($user->isSubscriber());
+    }
+
+    /** @test */
+    public function a_subscribed_user_doesnt_create_a_new_subscriber_when_subscribe()
+    {
+        // Arrange
+        $user = $this->actingAsUser();
+        $user->subscription()->create();
+
+        // Act
+        $this->post('/subscribe');
+
+        // Assert
+        $this->assertEquals(1, Subscriber::count());
     }
 
     /** @test */
@@ -115,10 +129,15 @@ class SubscribersTest extends TestCase
         $this->assertFalse($user->isSubscriber());
     }
 
-    /** @test */
-    public function a_subscriber_can_unsubscribe_by_link()
+    /**
+     * @test
+     * @dataProvider baseVisitorProvider
+     * @param $role
+     */
+    public function a_subscriber_can_unsubscribe_by_link($role)
     {
         // Arrange
+        $this->actingAsRole($role);
         $subscriber = factory(Subscriber::class)->create();
         $link = \URL::signedRoute('unsubscribe.link', compact('subscriber'));
 
@@ -142,19 +161,5 @@ class SubscribersTest extends TestCase
         // Assert
         $response->assertStatus(403);
         $this->assertDatabaseHas($subscriber->getTable(), ['email' => $subscriber->email]);
-    }
-
-    /** @test */
-    public function a_subscribed_user_doesnt_create_a_new_subscriber_when_subscribe()
-    {
-        // Arrange
-        $user = $this->actingAsUser();
-        $user->subscription()->create();
-
-        // Act
-        $this->post('/subscribe');
-
-        // Assert
-        $this->assertEquals(1, Subscriber::count());
     }
 }
