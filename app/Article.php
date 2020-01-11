@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
-    use CanBeActivated, HasImage;
+    use CanBeActivated;
+    use HasImage;
 
     protected $fillable = ['title', 'abstract', 'body', 'is_active'];
 

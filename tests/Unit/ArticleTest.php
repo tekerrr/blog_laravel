@@ -10,7 +10,8 @@ use Tests\TestCase;
 
 class ArticleTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     /** @test */
     public function attribute_created_at_returns_russian_date()

@@ -9,7 +9,8 @@ use Tests\TestCase;
 
 class ConfigTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     /** @test */
     public function method_set_content_can_create_new_settings()

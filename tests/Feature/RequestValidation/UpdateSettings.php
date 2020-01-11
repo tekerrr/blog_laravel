@@ -2,29 +2,28 @@
 
 namespace Tests\Feature\RequestValidation;
 
-use App\Page;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
 class UpdateSettings extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     public function invalidDataProvider()
     {
         $faker = Factory::create();
 
         return [
-            'empty_paginator_items' => ['paginator_items', ''],
-            'not_a_number_paginator_items' => ['paginator_items', $faker->word],
-            'too_small_paginator_items' => ['paginator_items', 0],
-            'empty_navbar_articles' => ['navbar_articles', ''],
-            'not_a_number_navbar_articles' => ['navbar_articles', $faker->word],
-            'too_small_navbar_articles' => ['navbar_articles', 0],
-            'empty_custom_paginator_items' => ['custom_paginator_items', ''],
+            'empty_paginator_items'                       => ['paginator_items', ''],
+            'not_a_number_paginator_items'                => ['paginator_items', $faker->word],
+            'too_small_paginator_items'                   => ['paginator_items', 0],
+            'empty_navbar_articles'                       => ['navbar_articles', ''],
+            'not_a_number_navbar_articles'                => ['navbar_articles', $faker->word],
+            'too_small_navbar_articles'                   => ['navbar_articles', 0],
+            'empty_custom_paginator_items'                => ['custom_paginator_items', ''],
             'not_selected_element_custom_paginator_items' => ['custom_paginator_items', $faker->word],
         ];
     }
@@ -35,8 +34,8 @@ class UpdateSettings extends TestCase
         // Arrange
         $this->actingAsRole('admin');
         $attributes = [
-            'paginator_items' => $this->faker->numberBetween(1, 5),
-            'navbar_articles' => $this->faker->numberBetween(1, 5),
+            'paginator_items'        => $this->faker->numberBetween(1, 5),
+            'navbar_articles'        => $this->faker->numberBetween(1, 5),
             'custom_paginator_items' => $this->faker->randomElement(['10', '20', '50', '200', 'all']),
         ];
 
@@ -58,8 +57,8 @@ class UpdateSettings extends TestCase
         // Arrange
         $this->actingAsRole('admin');
         $attributes = [
-            'paginator_items' => $this->faker->numberBetween(1, 5),
-            'navbar_articles' => $this->faker->numberBetween(1, 5),
+            'paginator_items'        => $this->faker->numberBetween(1, 5),
+            'navbar_articles'        => $this->faker->numberBetween(1, 5),
             'custom_paginator_items' => $this->faker->randomElement(['10', '20', '50', '200', 'all']),
         ];
 

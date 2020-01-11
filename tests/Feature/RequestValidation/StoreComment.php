@@ -9,7 +9,8 @@ use Tests\TestCase;
 
 class StoreComment extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     /** @test */
     public function the_valid_data_passes_the_validation_rules()

@@ -10,7 +10,7 @@ class UpdatePassword extends FormRequest
     {
         return [
             'current-password' => ['required', 'string', 'min:4'],
-            'password' => ['required', 'string', 'min:4', 'confirmed'],
+            'password'         => ['required', 'string', 'min:4', 'confirmed'],
         ];
     }
 }

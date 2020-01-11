@@ -9,7 +9,8 @@ use Tests\TestCase;
 
 class UpdatePassword extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     public function invalidDataProvider()
     {

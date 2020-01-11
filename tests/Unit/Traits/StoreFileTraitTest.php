@@ -10,7 +10,9 @@ use Tests\WithMockForTrait;
 
 class StoreFileTraitTest extends TestCase
 {
-    use WithMockForTrait, WithFaker, WithImage;
+    use WithMockForTrait;
+    use WithFaker;
+    use WithImage;
 
     /** @test */
     public function method_store_file_returns_path_to_saved_file_when_the_file_input_is_not_empty()

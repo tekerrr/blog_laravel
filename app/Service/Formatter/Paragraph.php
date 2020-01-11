@@ -1,9 +1,7 @@
 <?php
 
-
 namespace App\Service\Formatter;
 
-use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 
 class Paragraph
@@ -25,8 +23,8 @@ class Paragraph
     protected function tag(Collection $paragraphs)
     {
         return $paragraphs->map(function ($paragraph) {
-            $paragraph = Str::start($paragraph, '<p>');
-            $paragraph = Str::finish($paragraph, '</p>');
+            $paragraph = \Str::start($paragraph, '<p>');
+            $paragraph = \Str::finish($paragraph, '</p>');
             return $paragraph;
         });
     }

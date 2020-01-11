@@ -2,11 +2,8 @@
 
 namespace Tests\Feature\Common;
 
-
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 use Tests\WithImage;
 
@@ -119,7 +116,7 @@ class UsersTest extends TestCase
 
         // Assert
         $auth
-            ? $this->assertDatabaseHas('users', Arr::only($attributes, ['name']))
+            ? $this->assertDatabaseHas('users', \Arr::only($attributes, ['name']))
             : $response->assertRedirect('/login');
     }
 
@@ -134,7 +131,7 @@ class UsersTest extends TestCase
         // Arrange
         $currentPassword = $this->faker->password;
         $newPassword = $this->faker->password;
-        $visitor = $this->actingAsRole($role, ['password' => Hash::make($currentPassword)]);
+        $visitor = $this->actingAsRole($role, ['password' => \Hash::make($currentPassword)]);
         $attributes = [
             'current-password' => $currentPassword,
             'password' => $newPassword,

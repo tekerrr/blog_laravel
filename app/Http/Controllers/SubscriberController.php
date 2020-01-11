@@ -3,18 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Subscriber;
-use Illuminate\Http\Request;
 
 class SubscriberController extends Controller
 {
     public function subscribe()
     {
-        if (auth()->check() && ! auth()->user()->subscription) {
-            auth()->user()->subscription()->create();
-        } else {
-            $attributes = request()->validate(['email' => ['required', 'string', 'email', 'max:255']]);
-            Subscriber::firstOrCreate($attributes);
-        }
+        auth()->check()
+            ? $this->subscribeForAuth()
+            : $this->subscribeForGuest();
 
         flash('Подписка успешно оформлена.');
         return back();
@@ -37,5 +33,18 @@ class SubscriberController extends Controller
         $subscriber->delete();
         flash('Вы отписались от получения сообщений о новых статьях.', 'danger');
         return redirect()->route('articles.index');
+    }
+
+    protected function subscribeForAuth()
+    {
+        if (! auth()->user()->subscription) {
+            auth()->user()->subscription()->create();
+        }
+    }
+
+    protected function subscribeForGuest()
+    {
+        $attributes = request()->validate(['email' => ['required', 'string', 'email', 'max:255']]);
+        Subscriber::firstOrCreate($attributes);
     }
 }

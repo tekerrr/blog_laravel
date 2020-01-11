@@ -10,7 +10,8 @@ use Tests\TestCase;
 
 class SettingsTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     /**
      * @test

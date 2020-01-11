@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Service;
-
 
 use Illuminate\Database\Eloquent\Builder;
 
@@ -16,7 +14,7 @@ class CustomPaginator
     {
         $perPage = request($this->queryKey);
 
-        if (! $perPage ||  ! in_array($perPage, $this->getSelectorOptions())) {
+        if (! $perPage || ! in_array($perPage, $this->getSelectorOptions())) {
             $perPage = config('content.custom_paginator.items');
         }
 

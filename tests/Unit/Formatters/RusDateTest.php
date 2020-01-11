@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Tests\Unit\Formatters;
 
 use App\Service\Formatter\RusDate;

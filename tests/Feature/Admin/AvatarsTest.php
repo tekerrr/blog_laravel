@@ -5,14 +5,15 @@ namespace Tests\Feature\Admin;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Tests\TestCase;
 use Tests\WithImage;
 
 class AvatarsTest extends TestCase
 {
-    use RefreshDatabase, WithFaker, WithImage;
+    use RefreshDatabase;
+    use WithFaker;
+    use WithImage;
 
     /**
      * @test

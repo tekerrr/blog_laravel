@@ -6,7 +6,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateArticle extends FormRequest
 {
-    use ParagraphTagTrait, StoreFileTrait;
+    use ParagraphTagTrait;
+    use StoreFileTrait;
 
     public function rules()
     {

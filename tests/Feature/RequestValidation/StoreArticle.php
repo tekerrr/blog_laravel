@@ -12,19 +12,21 @@ use Tests\WithImage;
 
 class StoreArticle extends TestCase
 {
-    use RefreshDatabase, WithFaker, WithImage;
+    use RefreshDatabase;
+    use WithFaker;
+    use WithImage;
 
     public function invalidDataProvider()
     {
         $faker = Factory::create();
 
         return [
-            'empty_title' => ['title', ''],
-            'short_title' => ['title', $faker->regexify('[A-Za-z]{4}')],
-            'long_title' => ['title', $faker->regexify('[A-Za-z]{110}')],
-            'empty_abstract' => ['abstract', ''],
-            'long_abstract' => ['abstract', $faker->regexify('[A-Za-z]{260}')],
-            'empty_body' => ['body', ''],
+            'empty_title'       => ['title', ''],
+            'short_title'       => ['title', $faker->regexify('[A-Za-z]{4}')],
+            'long_title'        => ['title', $faker->regexify('[A-Za-z]{110}')],
+            'empty_abstract'    => ['abstract', ''],
+            'long_abstract'     => ['abstract', $faker->regexify('[A-Za-z]{260}')],
+            'empty_body'        => ['body', ''],
             'empty_image'       => ['image', ''],
             'not_a_file_image'  => ['image', ['array']],
             'not_a_image_image' => ['image', UploadedFile::fake()->create('new_file.txt')],

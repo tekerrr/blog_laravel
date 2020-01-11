@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Service\CustomPaginator;
 use App\Subscriber;
-use Illuminate\Http\Request;
 
 class SubscriberController extends Controller
 {

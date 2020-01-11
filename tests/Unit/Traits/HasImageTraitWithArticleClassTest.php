@@ -11,7 +11,9 @@ use Tests\WithImage;
 
 class HasImageTraitWithArticleClassTest extends TestCase
 {
-    use RefreshDatabase, WithFaker, WithImage;
+    use RefreshDatabase;
+    use WithFaker;
+    use WithImage;
 
     /** @test */
     public function a_article_can_have_an_image()

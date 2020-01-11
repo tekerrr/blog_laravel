@@ -5,14 +5,15 @@ namespace Tests\Feature\Admin;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Tests\TestCase;
 use Tests\WithImage;
 
 class UsersTest extends TestCase
 {
-    use RefreshDatabase, WithFaker, WithImage;
+    use RefreshDatabase;
+    use WithFaker;
+    use WithImage;
 
     /**
      * @test
@@ -130,8 +131,8 @@ class UsersTest extends TestCase
 
         // Assert
         $status->contains('admin')
-            ? $this->assertDatabaseHas(app(User::class)->getTable(), Arr::only($attributes, ['name']))
-            : $this->assertDatabaseMissing(app(User::class)->getTable(), Arr::only($attributes, ['name']));
+            ? $this->assertDatabaseHas(app(User::class)->getTable(), \Arr::only($attributes, ['name']))
+            : $this->assertDatabaseMissing(app(User::class)->getTable(), \Arr::only($attributes, ['name']));
     }
 
     /**

@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePage;
 use App\Page;
 use App\Service\CustomPaginator;
-use Illuminate\Http\Request;
 
 class PageController extends Controller
 {

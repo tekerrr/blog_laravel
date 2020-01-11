@@ -9,7 +9,8 @@ use Tests\TestCase;
 
 class CommentTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     /** @test */
     public function the_class_is_using_can_be_activated_trait_correctly()

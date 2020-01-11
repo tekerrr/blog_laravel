@@ -6,12 +6,12 @@ use App\Page;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
 class UpdatePage extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     public function invalidDataProvider()
     {
@@ -20,8 +20,8 @@ class UpdatePage extends TestCase
         return [
             'empty_title' => ['title', ''],
             'short_title' => ['title', $faker->regexify('[A-Za-z]{4}')],
-            'long_title' => ['title', $faker->regexify('[A-Za-z]{110}')],
-            'empty_body' => ['body', ''],
+            'long_title'  => ['title', $faker->regexify('[A-Za-z]{110}')],
+            'empty_body'  => ['body', ''],
         ];
     }
 

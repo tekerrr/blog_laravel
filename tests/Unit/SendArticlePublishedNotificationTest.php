@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use App\Article;
-use App\Events\ArticlePublished;
 use App\Subscriber;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -11,7 +10,8 @@ use Tests\TestCase;
 
 class SendArticlePublishedNotificationTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     /** @test */
     public function listener_send_emails_to_all_subscribers_when_article_published()

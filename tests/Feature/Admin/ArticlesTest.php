@@ -11,7 +11,9 @@ use Tests\WithImage;
 
 class ArticlesTest extends TestCase
 {
-    use RefreshDatabase, WithFaker, WithImage;
+    use RefreshDatabase;
+    use WithFaker;
+    use WithImage;
 
     /**
      * @test

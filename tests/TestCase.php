@@ -31,8 +31,8 @@ abstract class TestCase extends BaseTestCase
     public function baseVisitorProvider()
     {
         return [
-            'guest'  => ['guest', false],
-            'user'   => ['user', true],
+            'guest' => ['guest', false],
+            'user'  => ['user', true],
         ];
     }
 
@@ -62,12 +62,12 @@ abstract class TestCase extends BaseTestCase
         ];
     }
 
-    protected function createUser(array $attributes = []) : \App\User
+    protected function createUser(array $attributes = []): \App\User
     {
         return factory(\App\User::class)->create($attributes);
     }
 
-    protected function createUserWithRole(string $role = 'user', array $attributes = []) : \App\User
+    protected function createUserWithRole(string $role = 'user', array $attributes = []): \App\User
     {
         $user = $this->createUser($attributes);
 
@@ -78,14 +78,14 @@ abstract class TestCase extends BaseTestCase
         return $user;
     }
 
-    protected function actingAsUser(array $attributes = []) : \App\User
+    protected function actingAsUser(array $attributes = []): \App\User
     {
         $this->actingAs($user = $this->createUser($attributes));
 
         return $user;
     }
 
-    protected function actingAsRole($role = 'user', array $attributes = []) : ?\App\User
+    protected function actingAsRole($role = 'user', array $attributes = []): ?\App\User
     {
         if ($role == 'guest') {
             return null;

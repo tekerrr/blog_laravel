@@ -11,8 +11,8 @@ class StorePage extends FormRequest
     public function rules()
     {
         return [
-            'title'    => 'required|min:5|max:100',
-            'body'     => 'required',
+            'title' => 'required|min:5|max:100',
+            'body'  => 'required',
         ];
     }
 }

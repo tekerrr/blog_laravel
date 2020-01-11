@@ -7,7 +7,9 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasImage, CanBeActivated;
+    use Notifiable;
+    use HasImage;
+    use CanBeActivated;
 
     protected $fillable = ['name', 'email', 'password', 'about', 'is_active'];
     protected $hidden = ['password', 'remember_token'];
@@ -17,7 +19,10 @@ class User extends Authenticatable
         parent::boot();
 
         static::updated(function (User $user) {
-            if (! empty($user->isDirty('email')) && ($sub = Subscriber::where('email', $user->getOriginal('email'))->first())) {
+            if (
+                ! empty($user->isDirty('email'))
+                && ($sub = Subscriber::where('email', $user->getOriginal('email'))->first())
+            ) {
                 $sub->update(['email' => $user->email]);
             }
         });

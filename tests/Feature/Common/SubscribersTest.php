@@ -9,7 +9,8 @@ use Tests\TestCase;
 
 class SubscribersTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     /**
      * @test

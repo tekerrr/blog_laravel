@@ -5,12 +5,12 @@ namespace Tests\Unit;
 use App\Service\CustomPaginator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class CustomPaginatorTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     /** @test */
     public function custom_paginator_without_request_returns_default_per_page()
@@ -110,7 +110,7 @@ class CustomPaginatorTest extends TestCase
         $response = $paginator->paginate(\App\Article::query());
 
         // Assert
-        $this->assertEquals($boolean, Str::contains($response->url(2), 'items='));
+        $this->assertEquals($boolean, \Str::contains($response->url(2), 'items='));
     }
 
     /** @test */

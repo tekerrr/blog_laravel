@@ -2,17 +2,16 @@
 
 namespace Tests\Feature\Common;
 
-
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 use Tests\WithImage;
 
 class AvatarsTest extends TestCase
 {
-    use RefreshDatabase, WithFaker, WithImage;
+    use RefreshDatabase;
+    use WithFaker;
+    use WithImage;
 
     /** @test */
     public function a_user_can_view_his_avatar_on_his_account_page()

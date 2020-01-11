@@ -11,7 +11,9 @@ use Tests\WithImage;
 
 class RolesTest extends TestCase
 {
-    use RefreshDatabase, WithFaker, WithImage;
+    use RefreshDatabase;
+    use WithFaker;
+    use WithImage;
 
     /** @test */
     public function user_editing_page_shows_all_roles()
@@ -26,8 +28,9 @@ class RolesTest extends TestCase
         $response = $this->get('/admin/users/' . $user->id . '/edit');
 
         // Assert
-        $response->assertSeeText($userRole);
-        $response->assertSeeText($otherRole);
+        $response
+            ->assertSeeText($userRole)
+            ->assertSeeText($otherRole);
     }
 
     /**

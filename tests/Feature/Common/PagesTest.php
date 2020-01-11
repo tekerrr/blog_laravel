@@ -9,7 +9,8 @@ use Tests\TestCase;
 
 class PagesTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     /** @test */
     public function anyone_can_view_the_page_page()

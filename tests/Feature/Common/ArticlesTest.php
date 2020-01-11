@@ -10,7 +10,8 @@ use Tests\TestCase;
 
 class ArticlesTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     /** @test */
     public function anyone_can_view_the_article_list_page()

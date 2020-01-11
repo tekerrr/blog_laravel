@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateAccount;
-use Illuminate\Http\Request;
 
 class AccountController extends Controller
 {

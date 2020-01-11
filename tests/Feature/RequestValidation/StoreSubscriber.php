@@ -10,7 +10,8 @@ use Tests\TestCase;
 
 class StoreSubscriber extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     public function invalidDataProvider()
     {

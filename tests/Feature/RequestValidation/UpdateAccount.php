@@ -10,7 +10,8 @@ use Tests\TestCase;
 
 class UpdateAccount extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     public function invalidDataProvider()
     {

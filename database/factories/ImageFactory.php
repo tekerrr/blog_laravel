@@ -1,9 +1,8 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-
-use App\Model;
 use Faker\Generator as Faker;
+
+/** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 $factory->define(\App\Image::class, function (Faker $faker) {
     $imageables = [
@@ -14,14 +13,15 @@ $factory->define(\App\Image::class, function (Faker $faker) {
     $imageable = factory($imageableType);
 
     return [
-        'path' => $faker->imageUrl(640, 480),
+        'path'           => $faker->imageUrl(640, 480),
         'imageable_type' => $imageableType,
-        'imageable_id' => $imageable,
+        'imageable_id'   => $imageable,
     ];
 });
+
 $factory->state(\App\Image::class, 'withoutImageable', function () {
     return [
         'imageable_type' => '',
-        'imageable_id' => '',
+        'imageable_id'   => '',
     ];
 });
